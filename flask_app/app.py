@@ -26,7 +26,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 client = MongoClient('localhost', 27017)
 
 
-@app.route("/fetch_siloing_data", methods=['GET'])
+@app.route("/api/fetch_siloing_data", methods=['GET'])
 def fetch_siloing_data():
     database_data = siloing_data.find()
     result = []
@@ -34,7 +34,7 @@ def fetch_siloing_data():
         result.append({'token_id': data['token_id'], 'platform': data['platform'], 'time': data['time']})
     return jsonify(result)
 
-@app.route('/add_siloing_data', methods=['POST'])
+@app.route('/api/add_siloing_data', methods=['POST'])
 def add_siliong_data():
     data = request.get_json()
     
@@ -65,18 +65,18 @@ if __name__ == "__main__":
 #get video by id
 
 # i.e if first time user opened the portal
-@app.route('/api/video', methods=['GET'])
+@app.route("/api/video", methods=['GET'])
 def get_videos_by_id():
     video_ids = request.args.get('ids')
 
     if video_ids is None:
-        return jsonify(video_service.get_default_video_list())
+        return jsonify(video_service.get_default_video_list()), 200
 
     video_ids, err, code = utils.assert_video_ids(video_ids)
     if err:
-        return err, code
+        return err, code 
 
-    return jsonify(video_service.get_video_by_ids(video_ids))
+    return jsonify(video_service.get_video_by_ids(video_ids)), 200
 
 # @todo, keyword 'search' is not implemented
 # for now send back random string of IDs
@@ -105,6 +105,7 @@ def get_yt_transcript():
     video_id = request.args.get('id')
     if not video_id:
         return jsonify({'error': 'Missing video_id parameter'}), 400
+
     transcript, source = yt_transcript.get_transcript(video_id)
     return jsonify({'transcript': transcript, 'source': source})
 

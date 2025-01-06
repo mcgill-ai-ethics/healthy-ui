@@ -77,7 +77,7 @@ def get_video_by_keyword_search(keyword: str):
 
 
 
-def get_video_by_ids(video_ids: str):
+def get_video_by_ids(video_ids: list[str]|None):
     extracted_video_ids = yt_transcript.extract_ids(video_ids)
     res = youtube_cc(extracted_video_ids)
     formatted_data = simplify_youtube_data(res)
