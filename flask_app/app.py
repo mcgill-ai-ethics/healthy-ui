@@ -10,8 +10,6 @@ import keyword_ex
 from services import video_service
 from utils import assert_video_ids
 import threading 
-
-from flask import Flask, jsonify, request
 from pymongo import MongoClient
 
 trk = keyword_ex.TextRankKeyword()
