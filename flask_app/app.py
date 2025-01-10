@@ -220,6 +220,9 @@ def youtube_blob_keywords(video_ids=None):
     transcripts = yt_transcript.get_relevant_transcript(video_ids)
     
     json_results = {}
+    if not vid_data:
+        return json_results
+
     for video_id in vid_data:
         title = vid_data[video_id]["items"][0]["snippet"]["title"]
         description = vid_data[video_id]["items"][0]["snippet"]["description"]
@@ -233,13 +236,14 @@ def youtube_blob_keywords(video_ids=None):
 
         trk.analyze(blob, candidate_pos = ['NOUN', 'PROPN'], window_size=4, lower=False)
         keywords = trk.get_keywords(10)
-        print(keywords)
+        print(keywords)#test
         
 
         tags = vid_data[video_id]["items"][0]["snippet"]["tags"]
 
+        best_keywords = {}
+        dict_keyphrases = {}
         if tags is not None:
-            best_keywords = {}
 
             for keyword, score in keywords.items():
                 closest = trk.closest_keyword2(keyword, tags)
@@ -287,6 +291,7 @@ def youtube_news(video_ids=None):
         return err, code
 
     res = youtube_blob_keywords(video_ids)
+    print(res)#test
 
     json_results = {}
     for video_id in res:
