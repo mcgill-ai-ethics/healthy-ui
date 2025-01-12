@@ -74,6 +74,7 @@ def get_transcript(video_id):
             except Exception as e:
                 print("No transcripts found")
 
+    return {}, "none"
         
 
 def clean_transcript(transcript):
