@@ -55,11 +55,8 @@ with open("schemas/siloing_data_schema.json", "r") as file:
 
 db.create_collection('siloing_data', validator={'$jsonSchema': json_validator})
 
-
 siloing_data = db.siloing_data
 
-if __name__ == "__main__":
-    app.run(debug=True)
 #get video by id
 
 # i.e if first time user opened the portal
@@ -209,78 +206,14 @@ def youtube_transcript_keywords(video_ids=None):
 # ROUTE: Get best combination of keywords from youtube metadata (title, desc) + relevant transcripts 
 @app.route('/yt/b-kw', methods=['GET'])
 def youtube_blob_keywords(video_ids=None):
+    video_ids = ""
     if video_ids is None:
         video_ids = request.args.get('ids')
         video_ids, err, code = utils.assert_video_ids(video_ids)
         if err:
             return err, code
     
-    video_ids = yt_transcript.extract_ids(video_ids)
-    vid_data = go_interface.youtube_cc(video_ids)
-    transcripts = yt_transcript.get_relevant_transcript(video_ids)
-    
-    json_results = {}
-    if not vid_data:
-        return json_results
-
-    for video_id in vid_data:
-        title = vid_data[video_id]["items"][0]["snippet"]["title"]
-        description = vid_data[video_id]["items"][0]["snippet"]["description"]
-        if transcripts[video_id]['text'] is not None:
-            transcript = transcripts[video_id]['text']
-            blob = title + description + transcript
-            t_used = True
-        else:
-            blob = title + description
-            t_used = False
-
-        trk.analyze(blob, candidate_pos = ['NOUN', 'PROPN'], window_size=4, lower=False)
-        keywords = trk.get_keywords(10)
-        print(keywords)#test
-        
-
-        tags = vid_data[video_id]["items"][0]["snippet"]["tags"]
-
-        best_keywords = {}
-        dict_keyphrases = {}
-        if tags is not None:
-
-            for keyword, score in keywords.items():
-                closest = trk.closest_keyword2(keyword, tags)
-                if closest is None:
-                    best_keywords[keyword] = score
-                else:
-                    # replace keyword with closest keyword
-                    for c, s in closest.items():
-                        best_keywords[c] = score * s
-                if closest is None:
-                    # No similar keywords between tags and TextRank keywords
-                    keyphrases = trk.yake_phrasing(blob)
-                    dict_keyphrases = {k[0]: k[1] for k in keyphrases[:5]} # limit to 5 keyphrases
-                    for keyphrase, score in dict_keyphrases.items():
-                        closest = trk.closest_keyword2(keyphrase, tags)
-                        if closest is None:
-                            best_keywords[keyphrase] = score
-                        else:
-                            # replace keyword with closest keyword
-                            for c, s in closest.items():
-                                best_keywords[c] = score * s
-            
-        # How many queries to generate, and how many keywords per query
-        query_strings = trk.generate_query_strings(best_keywords, num_q=3, keywords_per_q=3)
-        query_strings = list(query_strings)
-
-        json_results[video_id] = {
-            "query_strings": query_strings,
-            "keyphrases": dict_keyphrases,
-            "best_keywords": best_keywords,
-            "tags": tags,
-            "keywords": keywords, 
-            "transcript_used": t_used
-            }
-
-    return json_results
-
+    return video_service.get_youtube_blob_keywords(video_ids)
 
 # ROUTE: Get related news articles for a list of videos
 @app.route('/yt/news', methods=['GET'])
@@ -290,12 +223,14 @@ def youtube_news(video_ids=None):
     if err:
         return err, code
 
-    res = youtube_blob_keywords(video_ids)
-    print(res)#test
+    res = video_service.get_youtube_blob_keywords(video_ids)
+
+    print(f"res value: {res}")#test
 
     json_results = {}
     for video_id in res:
         queries = res[video_id]["query_strings"]
+        print(f"queries: {queries}")
 
         queries = utils.strings_to_bytes(queries) 
         headlines = go_interface.news_api_cc(queries)
@@ -403,6 +338,10 @@ def news_api_cc(queries=None):
     res = go_interface.news_api_cc(queries)
     return jsonify(res)
 
+@app.route('/', methods=['GET'])
+def hello_world():
+    return "Welcome to the flask backend"
+    
 if __name__ == '__main__':
     # note port is a reserved env variable in platform SH
     # @todo consolidate PORT + BACKEND_PORT

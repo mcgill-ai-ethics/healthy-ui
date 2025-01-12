@@ -32,4 +32,12 @@
 #### 3. install reqs via pip 
 `pip install -r requirements.txt`
 
+#### 4. If the library.dll file is not present in the flask_app directory
+```
+cd go
+go build -o library.dll -buildmode=c-shared main.go library.go c_youtube.go c_newsapi.go c_factcheck.go
+rm library.h
+mv library.dll ../flask_app
+```
+
 #### via docker 
