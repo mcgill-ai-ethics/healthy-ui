@@ -256,6 +256,7 @@ def youtube_fc(video_ids=None):
 
     res = video_service.get_youtube_blob_keywords(video_ids)
 
+
     json_results = {}
     for video_id in res:
         queries = res[video_id]["query_strings"]
@@ -263,6 +264,8 @@ def youtube_fc(video_ids=None):
         queries = utils.strings_to_bytes(queries) 
         fact_checks = go_interface.fact_check_cc(queries)
         queries =  utils.bytes_to_strings(queries)
+
+        assert fact_checks is not None, "fact_checks is None is route /yt/fc"
 
         video_fc = {}
         has_claims = False
