@@ -63,6 +63,8 @@ def fact_check_cc(queries):
 
     google_api_key_bytes = google_api_key.encode('utf-8')
 
+    result_str = ""
+
     try:
         result = fact_check_get_cc(query_array, len(queries), google_api_key_bytes)
         print(f"Allocated memory after fact check: {get_alloc_count()}")
@@ -87,6 +89,8 @@ def fact_check_cc(queries):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         print(f"Error type: {type(e)}")
+
+    return json.loads(result_str)
 
 def news_api_cc(news_queries):
     news_query_array = (ctypes.c_char_p * len(news_queries))(*news_queries)

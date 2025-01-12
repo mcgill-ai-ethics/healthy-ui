@@ -254,7 +254,7 @@ def youtube_fc(video_ids=None):
         if err:
             return err, code
 
-    res = youtube_blob_keywords(video_ids)
+    res = video_service.get_youtube_blob_keywords(video_ids)
 
     json_results = {}
     for video_id in res:
@@ -272,13 +272,14 @@ def youtube_fc(video_ids=None):
                 print(fact_checks[query]['number_of_claims'])
                 video_fc[query] = fact_checks[query]
                 has_claims = True
-        if has_claims:
-            print(f"{query} has claims")
-            
-            json_results[video_id] = {
-                "query_strings": queries,
-                "fact_checks": video_fc,
-            }
+
+            if has_claims:
+                print(f"{query} has claims")
+                
+                json_results[video_id] = {
+                    "query_strings": queries,
+                    "fact_checks": video_fc,
+                }
 
     return jsonify(json_results)
 
@@ -292,7 +293,7 @@ def youtube_fc_news(video_ids=None):
         if err:
             return err, code
 
-    res = youtube_blob_keywords(video_ids)
+    res = video_service.get_youtube_blob_keywords(video_ids)
 
     json_results = {}
     for video_id in res:
