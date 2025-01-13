@@ -32,7 +32,15 @@
 #### 3. install reqs via pip 
 `pip install -r requirements.txt`
 
+#### 4. If the library.dll file is not present in the flask_app directory
+```
+cd go
+go build -o library.dll -buildmode=c-shared main.go library.go c_youtube.go c_newsapi.go c_factcheck.go
+rm library.h
+mv library.dll ../flask_app
+```
 #### via docker 
+
 
 ### EXTENSION
 
@@ -52,5 +60,11 @@ select 'load unpacked'
 navigate to the extension-react folder 
 choose the 'dist' directory 
 
+### ToDo
+#### Winter 2025
+- Finish implementing the videos fact-check articles
+  - Fix the backend code to remove all inference errors
+  - Fix frontend extension code so that it runs on local host
+  - Create pipelines to host website
 
-
+- If time permits, start implementing the carbon emission tracker

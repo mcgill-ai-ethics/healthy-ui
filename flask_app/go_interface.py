@@ -63,18 +63,23 @@ def fact_check_cc(queries):
 
     google_api_key_bytes = google_api_key.encode('utf-8')
 
+    result_str = ""
+
     try:
         result = fact_check_get_cc(query_array, len(queries), google_api_key_bytes)
         print(f"Allocated memory after fact check: {get_alloc_count()}")
 
         if result:
-            result_str = ctypes.cast(result, ctypes.c_char_p).value.decode('utf-8')        
+            result_str = ctypes.cast(result, ctypes.c_char_p).value
+
+            assert result_str is not None, "result_str is none at fact_check_cc"
+            result_str = result_str.decode('utf-8')
 
             try:
-                free_result_success = free_result(result)
+                free_result(result)
             except Exception as e:
-                log_error(f"Unexpected error in free_result: {e}")
-                log_error(f"Exception type: {type(e)}")
+                print(f"Unexpected error in free_result: {e}")
+                print(f"Exception type: {type(e)}")
 
 
             print(f"Allocated memory after freeing: {get_alloc_count()}")
@@ -87,6 +92,7 @@ def fact_check_cc(queries):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         print(f"Error type: {type(e)}")
+
 
 def news_api_cc(news_queries):
     news_query_array = (ctypes.c_char_p * len(news_queries))(*news_queries)
@@ -101,14 +107,17 @@ def news_api_cc(news_queries):
         print(f"Allocated memory after news API GET: {get_alloc_count()}")
 
         if headlines:
-            headlines_str = (ctypes.cast(headlines, ctypes.c_char_p).value).decode('utf-8')
+            headlines_str = (ctypes.cast(headlines, ctypes.c_char_p).value)
+
+            assert headlines_str is not None, "headlines_str is None in news_api_cc"
+            headlines_str = headlines_str.decode('utf-8')
 
             try:
-                free_result_success = free_result(headlines)
+                free_result(headlines)
 
             except Exception as e:
-                log_error(f"Unexpected error in free_result: {e}")
-                log_error(f"Exception type: {type(e)}")
+                print(f"Unexpected error in free_result: {e}")
+                print(f"Exception type: {type(e)}")
 
             print(f"Allocated memory after freeing: {get_alloc_count()}")
             
@@ -134,13 +143,16 @@ def youtube_cc(ids):
         print(f"Allocated memory after youtube: {get_alloc_count()}")
         
         if result:
-            result_str = ctypes.cast(result, ctypes.c_char_p).value.decode('utf-8')      
+            result_str = ctypes.cast(result, ctypes.c_char_p).value
+
+            assert result_str is not None, "result_str is None in youtube_cc"
+            result_str = result_str.decode('utf-8')      
 
             try:
-                free_result_success = free_result(result)
+                free_result(result)
             except Exception as e:
-                log_error(f"Unexpected error in free_result: {e}")
-                log_error(f"Exception type: {type(e)}")
+                print(f"Unexpected error in free_result: {e}")
+                print(f"Exception type: {type(e)}")
 
             print(f"Allocated memory after freeing: {get_alloc_count()}")
             return json.loads(result_str)
@@ -160,12 +172,16 @@ def youtube_transcript_most_replayed_cc(ids):
         print(f"Allocated memory after transcript most replayed: {get_alloc_count()}")
         
         if result:
-            result_str = ctypes.cast(result, ctypes.c_char_p).value.decode('utf-8')      
+            result_str = ctypes.cast(result, ctypes.c_char_p).value
+
+            assert result_str is not None, "result_str is None in youtube_transcript_most_replayed_cc"
+            result_str = result_str.decode('utf-8')      
+
             try:
-                free_result_success = free_result(result)
+                free_result(result)
             except Exception as e:
-                log_error(f"Unexpected error in free_result: {e}")
-                log_error(f"Exception type: {type(e)}")
+                print(f"Unexpected error in free_result: {e}")
+                print(f"Exception type: {type(e)}")
 
             print(f"Allocated memory after freeing: {get_alloc_count()}")
            # # return (json.dumps(json.loads(result_str), indent=2))
@@ -185,12 +201,16 @@ def youtube_relevant_transcript_cc(ids):
         print(f"Allocated memory after transcript most replayed: {get_alloc_count()}")
         
         if result:
-            result_str = ctypes.cast(result, ctypes.c_char_p).value.decode('utf-8')      
+            result_str = ctypes.cast(result, ctypes.c_char_p).value 
+
+            assert result_str is not None, "result_str is None in youtube_relevant_transcript_cc"
+            result_str = result_str.decode('utf-8')      
+
             try:
-                free_result_success = free_result(result)
+                free_result(result)
             except Exception as e:
-                log_error(f"Unexpected error in free_result: {e}")
-                log_error(f"Exception type: {type(e)}")
+                print(f"Unexpected error in free_result: {e}")
+                print(f"Exception type: {type(e)}")
 
             print(f"Allocated memory after freeing: {get_alloc_count()}")
             return json.loads(result_str)
