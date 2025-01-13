@@ -39,5 +39,13 @@ go build -o library.dll -buildmode=c-shared main.go library.go c_youtube.go c_ne
 rm library.h
 mv library.dll ../flask_app
 ```
-
 #### via docker 
+
+### ToDo
+#### Winter 2025
+- Finish implementing the videos fact-check articles
+  - Fix the backend code to remove all inference errors
+  - Fix frontend extension code so that it runs on local host
+  - Create pipelines to host website
+
+- If time permits, start implementing the carbon emission tracker
