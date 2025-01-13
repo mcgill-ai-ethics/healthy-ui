@@ -63,8 +63,11 @@ choose the 'dist' directory
 ### ToDo
 #### Winter 2025
 - Finish implementing the videos fact-check articles
-  - Fix the backend code to remove all inference errors
+  - Fix the backend code to remove all inference errors [Done for now]
+    - Next step is to add a better algorithm to fact check (e.g. using ML)
   - Fix frontend extension code so that it runs on local host
+    - Display fact checked websites using the extension
+    - Potentially always add it as a pop up when clicking a new youtube video
   - Create pipelines to host website
 
 - If time permits, start implementing the carbon emission tracker
