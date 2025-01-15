@@ -1,9 +1,0 @@
-{
-  "manifest_version": 3,
-  "name": "HealthyUI Chrome Extension",
-  "description": "Chrome Extension for the HealthyUI app with React and Webpack",
-  "version": "1.0.0",
-  "action": {
-    "default_popup": "index.html"
-  }
-}
