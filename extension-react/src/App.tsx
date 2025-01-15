@@ -1,8 +1,9 @@
+import React from 'react'
 import "./App.css"
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
+    <div>
       Bubble app - main popup menu, managed by react see app.tsx
     </div>
   );
