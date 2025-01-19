@@ -1,11 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
+
 import "./App.css"
 
 const App = () => {
+  const [url, setUrl] = useState("")
+
+  const showURL = async () => {
+
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      console.log(tabs)
+    })
+
+  }
   return (
-    <div>
-      Bubble app - main popup menu, managed by react see app.tsx
-    </div>
+    <>
+      <button onClick={showURL}>Click me</button>
+    </>
   );
 }
 

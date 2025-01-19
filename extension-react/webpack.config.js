@@ -5,6 +5,8 @@ import path from 'path'
 export default {
   mode: "production",
   entry: {
+    content: './src/content/content.ts',
+    background: './src/background/background.ts',
     react: "./src/index.tsx"
   },
   output: {
@@ -25,7 +27,7 @@ export default {
   module: {
     rules: [
       {
-        test: /\.(js|jsx|tsx)$/,
+        test: /\.(js|ts)x?$/,
         exclude: /node_modules/,
         use: [
           {
@@ -33,6 +35,8 @@ export default {
             options: {
               presets: [
                 '@babel/preset-env',
+                '@babel/preset-react',
+                '@babel/preset-typescript',
                 ['@babel/preset-react', { 'runtime': 'automatic' }]
               ]
             }
@@ -45,6 +49,6 @@ export default {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.tsx', '.css']
+    extensions: ['.tsx', '.ts']
   }
 };
