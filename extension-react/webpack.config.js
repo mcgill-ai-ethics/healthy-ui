@@ -5,8 +5,7 @@ import path from 'path'
 export default {
   mode: "production",
   entry: {
-    content: './src/content/content.ts',
-    background: './src/background/background.ts',
+    contentScript: './src/content/content.ts',
     react: "./src/index.tsx"
   },
   output: {
@@ -35,7 +34,6 @@ export default {
             options: {
               presets: [
                 '@babel/preset-env',
-                '@babel/preset-react',
                 '@babel/preset-typescript',
                 ['@babel/preset-react', { 'runtime': 'automatic' }]
               ]

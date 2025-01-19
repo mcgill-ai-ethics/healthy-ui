@@ -6,9 +6,6 @@
   "action": {
     "default_popup": "index.html"
   },
-  "background": {
-    "service_worker": "background.ts"
-  },
   "content_scripts": [
     {
       "matches": [
