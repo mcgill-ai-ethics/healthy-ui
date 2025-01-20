@@ -6,6 +6,10 @@
   "action": {
     "default_popup": "index.html"
   },
+  "persmissions": [
+    "tabs",
+    "activeTab"
+  ],
   "content_scripts": [
     {
       "matches": [

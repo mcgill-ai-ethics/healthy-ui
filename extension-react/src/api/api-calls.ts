@@ -8,12 +8,12 @@ import results from '../assets/results'
  *******************************************************/
 // @todo move this to env file
 // const apiHost = process.env.REACT_APP_BACKEND_HOST ?? 'http://127.0.0.1:5000'
-const apiHost = 'http://127.0.0.1:8080'
+const apiHost = 'http://127.0.0.1:5000'
 
 // use this to do a basic check if the server is up and running
 // and responding to requests
 export const fetchTestData = async () => {
-  const { data } = await axios.get(`${apiHost}/api/test`)
+  const { data } = await axios.get(`${apiHost}/`)
   return data
 }
 
