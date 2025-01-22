@@ -1,6 +1,6 @@
-import { ChromeActionsEnum } from "./enums";
+import { TabsActionsEnum } from "./enums";
 
-export type ChromeAction = {
-  action: ChromeActionsEnum,
-  url: string,
+export type TabsActions = {
+  action: TabsActionsEnum,
+  url?: string,
 }

@@ -1,3 +1,3 @@
-export enum ChromeActionsEnum {
-  GET_URL, VIDEO_LOADED
+export enum TabsActionsEnum {
+  URL_CHANGED
 }

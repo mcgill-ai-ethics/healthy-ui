@@ -1,17 +1,9 @@
-import { ChromeActionsEnum } from "../common/enums";
-import { ChromeAction } from '../common/types'
+import { TabsActionsEnum } from "../common/enums";
+import { TabsActions } from '../common/types'
 
-// Listen for changes in the URL
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request === ChromeActionsEnum.GET_URL) {
-    sendResponse({ url: window.location.href });
-  }
-});
-
-// Detect when the video player is loaded
-window.addEventListener('load', () => {
-  if (window.location.hostname === 'www.youtube.com' && window.location.pathname === '/watch') {
-    chrome.runtime.sendMessage({ action: ChromeActionsEnum.VIDEO_LOADED, url: window.location.href });
+chrome.runtime.onMessage.addListener((message: TabsActions, sender, sendResponse) => {
+  if (message.action === TabsActionsEnum.URL_CHANGED) {
+    window.postMessage(message)
   }
 });
 

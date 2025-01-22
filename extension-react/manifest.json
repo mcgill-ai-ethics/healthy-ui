@@ -4,7 +4,8 @@
   "description": "Chrome Extension for the HealthyUI app with React and Webpack",
   "version": "1.0.0",
   "permissions": [
-    "webNavigation"
+    "webNavigation",
+    "tabs"
   ],
   "background": {
     "service_worker": "background.js"
