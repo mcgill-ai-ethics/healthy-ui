@@ -3,17 +3,19 @@
   "name": "HealthyUI Chrome Extension",
   "description": "Chrome Extension for the HealthyUI app with React and Webpack",
   "version": "1.0.0",
+  "permissions": [
+    "webNavigation"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_popup": "index.html"
   },
-  "persmissions": [
-    "tabs",
-    "activeTab"
-  ],
   "content_scripts": [
     {
       "matches": [
-        "<all_urls>"
+        "*://*.youtube.com/*"
       ],
       "js": [
         "contentScript.js"

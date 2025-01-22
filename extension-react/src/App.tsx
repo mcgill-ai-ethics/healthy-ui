@@ -10,7 +10,8 @@ const App = () => {
   const showURL = async () => {
     const chromeQuery = async () => {
       return new Promise((resolve, reject) => {
-        chrome.tabs.query({ active: true, windowId: chrome.windows.WINDOW_ID_CURRENT }, (tabs) => {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          console.log(tabs)//test
           if (chrome.runtime.lastError) {
             reject(chrome.runtime.lastError)
           }

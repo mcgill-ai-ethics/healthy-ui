@@ -6,6 +6,7 @@ export default {
   mode: "production",
   entry: {
     contentScript: './src/content/content.ts',
+    background: './src/background/background.ts',
     react: "./src/index.tsx"
   },
   output: {
@@ -47,6 +48,6 @@ export default {
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts']
+    extensions: ['.tsx', '.ts', '.js', '.jsx']
   }
 };
