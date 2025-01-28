@@ -5,7 +5,6 @@ import path from 'path'
 export default {
   mode: "production",
   entry: {
-    contentScript: './src/content/content.ts',
     background: './src/background/background.ts',
     react: "./src/index.tsx"
   },

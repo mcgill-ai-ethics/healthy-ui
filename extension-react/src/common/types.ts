@@ -1,6 +1,3 @@
-import { TabsActionsEnum } from "./enums";
-
-export type TabsActions = {
-  action: TabsActionsEnum,
-  url?: string,
+export type VideoURL = {
+  url: string
 }

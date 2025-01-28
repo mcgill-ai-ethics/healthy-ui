@@ -5,22 +5,12 @@
   "version": "1.0.0",
   "permissions": [
     "webNavigation",
-    "tabs"
+    "storage"
   ],
   "background": {
     "service_worker": "background.js"
   },
   "action": {
     "default_popup": "index.html"
-  },
-  "content_scripts": [
-    {
-      "matches": [
-        "*://*.youtube.com/*"
-      ],
-      "js": [
-        "contentScript.js"
-      ]
-    }
-  ]
+  }
 }
