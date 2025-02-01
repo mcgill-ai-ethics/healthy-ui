@@ -7,6 +7,16 @@
     "webNavigation",
     "storage"
   ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "*.png"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
   "background": {
     "service_worker": "background.js"
   },

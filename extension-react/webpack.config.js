@@ -6,7 +6,7 @@ export default {
   mode: "production",
   entry: {
     background: './src/background/background.ts',
-    react: "./src/index.tsx"
+    react: "./src/index.tsx",
   },
   output: {
     path: path.resolve('dist'),
@@ -20,11 +20,24 @@ export default {
     new CopyPlugin({
       patterns: [
         { from: path.resolve("manifest.json"), to: path.resolve('dist') },
+        { from: 'src/assets/logo.png', to: "assets" }
       ],
     }),
   ],
   module: {
     rules: [
+      {
+        test: /\.(png|jpg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              path: 'assets/'
+            }
+          }
+        ]
+      },
       {
         test: /\.(js|ts)x?$/,
         exclude: /node_modules/,
@@ -47,6 +60,6 @@ export default {
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.jsx']
+    extensions: ['.tsx', '.ts', '.js', '.jsx', '.png', 'jpg']
   }
 };
