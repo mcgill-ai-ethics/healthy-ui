@@ -5,6 +5,10 @@ import "./App.css"
 import { TabsActionsEnum } from './common/enums'
 import { VideoURL } from './common/types'
 
+import Logo from './components/Logo'
+
+import Grid from '@mui/material/Unstable_Grid2'
+
 const App = () => {
   const [currVideoURL, setCurrVideoURL] = useState("")
 
@@ -16,9 +20,12 @@ const App = () => {
   }, [])
 
   return (
-    <>
-      <div>{currVideoURL}</div>
-    </>
+    <Grid container spacing={2}>
+      <Grid xs={12}>
+        <Logo />
+        <div>{currVideoURL}</div>
+      </Grid>
+    </Grid>
   );
 }
 

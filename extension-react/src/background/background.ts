@@ -1,5 +1,6 @@
 // retrieve url on video loaded
 chrome.webNavigation.onHistoryStateUpdated.addListener((loadedPageDetails) => {
+  console.log("url %s", (loadedPageDetails.url))//test
   if (loadedPageDetails.url.includes("youtube.com/watch")) {
     chrome.storage.local.set({ url: loadedPageDetails.url })
   }
