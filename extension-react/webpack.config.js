@@ -60,6 +60,6 @@ export default {
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.jsx', '.png', 'jpg']
+    extensions: ['.tsx', '.ts', '.js', '.jsx', '.png', '.jpg']
   }
 };

@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react'
 import { fetchVideosById, fetchTestData, fetchNewsFactCheck } from './api/api-calls'
 import "./App.css"
 import { TabsActionsEnum } from './common/enums'
-import { VideoURL } from './common/types'
+import { VideoURL, FactCheckedURL } from './common/types'
+
+import dummy_url from "./mock_data/dummy_url.json"
 
 import Logo from './components/Logo'
 
@@ -17,13 +19,22 @@ import Switch from '@mui/material/Switch'
 
 const App = () => {
   const [currVideoURL, setCurrVideoURL] = useState("")
+  const [factCheckedArticles, setFactCheckedArticles] = useState<FactCheckedURL[]>([])
 
+  // to be used a bit later
   useEffect(() => {
     chrome.storage.local.get('url', (data: VideoURL) => {
       setCurrVideoURL(data.url)
       console.log(data.url)
     })
   }, [])
+
+  useEffect(() => {
+    fetch("./mock_data/dummy_url.json")
+      .then(response => response.json())
+      .then((data: FactCheckedURL[]) => setFactCheckedArticles(data))
+      .catch(error => console.error("Error while fetching fact checked articles", error))
+  })
 
   return (
     <Grid container spacing={2}>
@@ -37,24 +48,11 @@ const App = () => {
         <Divider sx={{ backgroundColor: 'black', boxShadow: "0px 0px 10px gray" }} aria-hidden='true' />
       </Grid>
       <Grid container rowSpacing={1} xs={12}>
-        <Grid xs={12}>
-          <Box>{currVideoURL}</Box>
-        </Grid>
-        <Grid xs={12}>
-          <Box>{currVideoURL}</Box>
-        </Grid>
-        <Grid xs={12}>
-          <Box>{currVideoURL}</Box>
-        </Grid>
-        <Grid xs={12}>
-          <Box>{currVideoURL}</Box>
-        </Grid>
-        <Grid xs={12}>
-          <Box>{currVideoURL}</Box>
-        </Grid>
-        <Grid xs={12}>
-          <Box>{currVideoURL}</Box>
-        </Grid>
+        {factCheckedArticles.map(article => (
+          <Grid key={article.id} xs={12}>
+            <Link href={article.url} underline="hover">{article.title}</Link>
+          </Grid>
+        ))}
       </Grid>
       <Grid xs={12}>
         <Divider sx={{ backgroundColor: 'black', boxShadow: "0px 0px 10px gray" }} aria-hidden='true' />
