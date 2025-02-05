@@ -1,8 +1,4 @@
-A simple Hello World Chrome extension using React. 
-
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Chrome extension implementation for fact check articles for YouTube videos 
 
 ## Available Scripts
 
