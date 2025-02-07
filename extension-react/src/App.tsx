@@ -82,7 +82,7 @@ const App = () => {
       <Grid container rowSpacing={1} xs={12}>
         {factCheckedArticles.map(article => (
           <Grid key={article.id} xs={12}>
-            <FactCheckLink article={article}></FactCheckLink>
+            <FactCheckLink article={article} />
           </Grid>
         ))}
       </Grid>

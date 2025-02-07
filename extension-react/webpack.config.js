@@ -20,7 +20,7 @@ export default {
     new CopyPlugin({
       patterns: [
         { from: path.resolve("manifest.json"), to: path.resolve('dist') },
-        { from: 'src/assets/logo.png', to: "assets" }
+        { from: 'src/assets/logo_v2.png', to: "assets" }
       ],
     }),
   ],
