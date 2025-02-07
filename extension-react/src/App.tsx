@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
-import { fetchVideosById, fetchTestData, fetchNewsFactCheck } from './api/api-calls'
 import "./App.css"
-import { TabsActionsEnum } from './common/enums'
 import { VideoURL, FactCheckedURL } from './common/types'
 
-import dummy_url from "./mock_data/dummy_url.json"
 
 import Logo from './components/Logo'
 
@@ -16,10 +13,48 @@ import Link from '@mui/material/Link'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormGroup from '@mui/material/FormGroup'
 import Switch from '@mui/material/Switch'
+import FactCheckLink from './components/FactCheckLink'
+
+//test data -> to be replaced by fetch afterward
+const dummyData =
+  [
+    {
+      "id": "1",
+      "title": "What's with Trump's obsession with Greenland? | About That",
+      "url": "https://www.youtube.com/watch?v=uYPxb0veHUE"
+    },
+    {
+      "id": "2",
+      "title": "What would a Canada-U.S. tariff war actually look like? | About That",
+      "url": "https://www.youtube.com/watch?v=wkwb0YaHJEk"
+    },
+    {
+      "id": "3",
+      "title": "Why Economists Hate Trump's Tariff Plan | WSJ",
+      "url": "https://www.youtube.com/watch?v=_-eHOSq3oqI"
+    },
+    {
+      "id": "4",
+      "title": "Trump claims he had 'very good call' with Trudeau about tariffs",
+      "url": "https://www.youtube.com/watch?v=GHShm26y-AA"
+    },
+    {
+      "id": "5",
+      "title": "Mark Carney - Canada Not Interested in Trump's Offer & Liberal Leadership Prospects | The Daily Show",
+      "url": "https://www.youtube.com/watch?v=zs8St-fF0kE"
+    },
+    {
+      "id": "6",
+      "title": "Jon on Trump's Trade War, The War on DEI & Myth of 'Meritocracy' | The Daily Show",
+      "url": "https://www.youtube.com/watch?v=TLOuiApOnbw"
+    }
+  ]
+
 
 const App = () => {
   const [currVideoURL, setCurrVideoURL] = useState("")
   const [factCheckedArticles, setFactCheckedArticles] = useState<FactCheckedURL[]>([])
+
 
   // to be used a bit later
   useEffect(() => {
@@ -30,11 +65,8 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    fetch("./mock_data/dummy_url.json")
-      .then(response => response.json())
-      .then((data: FactCheckedURL[]) => setFactCheckedArticles(data))
-      .catch(error => console.error("Error while fetching fact checked articles", error))
-  })
+    setFactCheckedArticles(dummyData)
+  }, [])
 
   return (
     <Grid container spacing={2}>
@@ -50,7 +82,7 @@ const App = () => {
       <Grid container rowSpacing={1} xs={12}>
         {factCheckedArticles.map(article => (
           <Grid key={article.id} xs={12}>
-            <Link href={article.url} underline="hover">{article.title}</Link>
+            <FactCheckLink article={article}></FactCheckLink>
           </Grid>
         ))}
       </Grid>

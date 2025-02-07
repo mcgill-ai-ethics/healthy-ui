@@ -5,7 +5,8 @@
   "version": "1.0.0",
   "permissions": [
     "webNavigation",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "web_accessible_resources": [
     {
