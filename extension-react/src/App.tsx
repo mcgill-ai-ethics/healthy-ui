@@ -5,6 +5,7 @@ import { VideoURL, FactCheckedURL } from './common/types'
 
 
 import Logo from './components/Logo'
+import TypographyTheme from './components/TypographyTheme'
 
 import Grid from '@mui/material/Unstable_Grid2'
 import Box from '@mui/material/Box'
@@ -69,35 +70,37 @@ const App = () => {
   }, [])
 
   return (
-    <Grid container spacing={2}>
-      <Grid xs={8}>
-        <Logo />
+    <TypographyTheme>
+      <Grid container spacing={2}>
+        <Grid xs={8}>
+          <Logo />
+        </Grid>
+        <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+          <Box display="flex" justifyContent="center" alignItems="center">Login/Register</Box>
+        </Grid>
+        <Grid xs={12}>
+          <Divider sx={{ backgroundColor: 'black', boxShadow: "0px 0px 10px gray" }} aria-hidden='true' />
+        </Grid>
+        <Grid container rowSpacing={1} xs={12}>
+          {factCheckedArticles.map(article => (
+            <Grid key={article.id} xs={12}>
+              <FactCheckLink article={article} />
+            </Grid>
+          ))}
+        </Grid>
+        <Grid xs={12}>
+          <Divider sx={{ backgroundColor: 'black', boxShadow: "0px 0px 10px gray" }} aria-hidden='true' />
+        </Grid>
+        <Grid xs={7}>
+          <Link href="https://github.com/stanley-utf8/healthy-ui">Learn more about this project</Link>
+        </Grid>
+        <Grid xs={5}>
+          <FormGroup>
+            <FormControlLabel labelPlacement="top" control={<Switch />} label='Fact-Check' />
+          </FormGroup>
+        </Grid>
       </Grid>
-      <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
-        <Box display="flex" justifyContent="center" alignItems="center">Login/Register</Box>
-      </Grid>
-      <Grid xs={12}>
-        <Divider sx={{ backgroundColor: 'black', boxShadow: "0px 0px 10px gray" }} aria-hidden='true' />
-      </Grid>
-      <Grid container rowSpacing={1} xs={12}>
-        {factCheckedArticles.map(article => (
-          <Grid key={article.id} xs={12}>
-            <FactCheckLink article={article} />
-          </Grid>
-        ))}
-      </Grid>
-      <Grid xs={12}>
-        <Divider sx={{ backgroundColor: 'black', boxShadow: "0px 0px 10px gray" }} aria-hidden='true' />
-      </Grid>
-      <Grid xs={7}>
-        <Link href="https://github.com/stanley-utf8/healthy-ui">Learn more about this project</Link>
-      </Grid>
-      <Grid xs={5}>
-        <FormGroup>
-          <FormControlLabel labelPlacement="top" control={<Switch />} label='Fact-Check' />
-        </FormGroup>
-      </Grid>
-    </Grid>
+    </TypographyTheme>
   )
 }
 
