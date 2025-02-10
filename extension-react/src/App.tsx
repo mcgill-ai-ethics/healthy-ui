@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { VideoURL, FactCheckedURL } from './common/types'
+import { DataFetchState, QueryOption } from './common/enums'
 
 import Logo from './components/Logo'
 import TypographyTheme from './components/TypographyTheme'
@@ -51,28 +52,38 @@ const dummyData =
 
 
 const App = () => {
-  const [currVideoURL, setCurrVideoURL] = useState("")
-  const [factCheckedArticles, setFactCheckedArticles] = useState<FactCheckedURL[]>([])
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [currVideoURL, setCurrVideoURL] = useState("");
+  const [factCheckedArticles, setFactCheckedArticles] = useState<FactCheckedURL[]>([]);
+  const [dataFetchState, setDataFetchState] = useState<DataFetchState>(DataFetchState.WRONG_PAGE);
+  const [isAntiSiloingQueryOption, setIsAntiSiloingQueryOption] = useState<boolean>(false);
 
 
   // to be used a bit later
   useEffect(() => {
     chrome.storage.local.get('url', (data: VideoURL) => {
       if (!data.url.includes("youtube.com/watch")) {
-        setIsLoading(true);
+        setDataFetchState(DataFetchState.WRONG_PAGE);
         return;
       }
 
-      setIsLoading(false);
+      setDataFetchState(DataFetchState.SUCCESSFUL_DATA_FETCH);//temporarely set to this until we have actual data fetch from the backend
       setCurrVideoURL(data.url)
       console.log(data.url)//test
     })
-  }, [])
+  }, [isAntiSiloingQueryOption])
 
   useEffect(() => {
     setFactCheckedArticles(dummyData)
   }, [])
+
+  const changeQueryOption = () => {
+    if (isAntiSiloingQueryOption) {
+      setIsAntiSiloingQueryOption(false);
+    }
+    else {
+      setIsAntiSiloingQueryOption(true);
+    }
+  }
 
   return (
     <TypographyTheme>
@@ -84,13 +95,30 @@ const App = () => {
           <Divider sx={{ backgroundColor: 'black', boxShadow: "0px 0px 10px gray" }} aria-hidden='true' />
         </Grid>
         <Grid container rowSpacing={1} xs={12} style={{ minHeight: '208px' }}>
-          {!isLoading ? factCheckedArticles.map(article => (
-            <Grid key={article.id} xs={12}>
-              <FactCheckLink article={article} />
+          {isAntiSiloingQueryOption &&
+            <Grid container xs={12} justifyContent="center" alignItems='center' style={{ minHeight: '208px', textAlign: 'center' }}>
+              This feature has not been implemented yet.<br /> Come back later!!
             </Grid>
-          )) :
+          }
+          {!isAntiSiloingQueryOption && dataFetchState == DataFetchState.SUCCESSFUL_DATA_FETCH &&
+            factCheckedArticles.map(article => (
+              <Grid key={article.id} xs={12}>
+                <FactCheckLink article={article} />
+              </Grid>
+            ))}
+          {!isAntiSiloingQueryOption && dataFetchState == DataFetchState.UNSUCCESSFUL_DATA_FETCH &&
+            <Grid container xs={12} justifyContent="center" alignItems='center' style={{ minHeight: '208px' }}>
+              Unable to fetch data for this video
+            </Grid>
+          }
+          {!isAntiSiloingQueryOption && dataFetchState == DataFetchState.LOADING &&
             <Grid container xs={12} justifyContent="center" alignItems="center" style={{ minHeight: '208px' }}>
               <CircularProgress />
+            </Grid>
+          }
+          {!isAntiSiloingQueryOption && dataFetchState == DataFetchState.WRONG_PAGE &&
+            <Grid container xs={12} justifyContent="center" alignItems='center' style={{ minHeight: '208px', textAlign: 'center' }}>
+              Not a YouTube video page.<br /> Navigate to a YouTube pages for articles.
             </Grid>
           }
         </Grid>
@@ -102,7 +130,13 @@ const App = () => {
         </Grid>
         <Grid xs={5}>
           <FormGroup>
-            <FormControlLabel labelPlacement="top" control={<Switch />} label='Fact-Check' />
+            <FormControlLabel
+              labelPlacement="top"
+              control={
+                <Switch
+                  checked={isAntiSiloingQueryOption}
+                  onChange={changeQueryOption} />}
+              label={isAntiSiloingQueryOption ? 'Anti-Siloing' : 'Fact-Check'} />
           </FormGroup>
         </Grid>
       </Grid>

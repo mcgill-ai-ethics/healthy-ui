@@ -1,3 +1,6 @@
-export enum TabsActionsEnum {
-  URL_CHANGED
+export enum DataFetchState {
+  LOADING, UNSUCCESSFUL_DATA_FETCH, SUCCESSFUL_DATA_FETCH, WRONG_PAGE
+}
+export enum QueryOption {
+  FACT_CHECK, ANTI_SILOING
 }
