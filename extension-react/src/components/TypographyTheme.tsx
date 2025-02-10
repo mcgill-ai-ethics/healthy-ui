@@ -12,7 +12,15 @@ const theme = createTheme({
   typography: {
     fontFamily: 'Advent Pro, Arial, sans-serif',
   },
-  // You can add other theme customizations here
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          padding: '10px'
+        }
+      }
+    }
+  }
 });
 
 const typographyTheme = ({ children }: ChildrenProps) => {

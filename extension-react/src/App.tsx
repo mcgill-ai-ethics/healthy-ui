@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react'
 
-import "./App.css"
 import { VideoURL, FactCheckedURL } from './common/types'
-
 
 import Logo from './components/Logo'
 import TypographyTheme from './components/TypographyTheme'
 
 import Grid from '@mui/material/Unstable_Grid2'
-import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import Link from '@mui/material/Link'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormGroup from '@mui/material/FormGroup'
 import Switch from '@mui/material/Switch'
 import FactCheckLink from './components/FactCheckLink'
+import CircularProgress from '@mui/material/CircularProgress';
 
 //test data -> to be replaced by fetch afterward
 const dummyData =
@@ -55,13 +53,20 @@ const dummyData =
 const App = () => {
   const [currVideoURL, setCurrVideoURL] = useState("")
   const [factCheckedArticles, setFactCheckedArticles] = useState<FactCheckedURL[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
 
   // to be used a bit later
   useEffect(() => {
     chrome.storage.local.get('url', (data: VideoURL) => {
+      if (!data.url.includes("youtube.com/watch")) {
+        setIsLoading(true);
+        return;
+      }
+
+      setIsLoading(false);
       setCurrVideoURL(data.url)
-      console.log(data.url)
+      console.log(data.url)//test
     })
   }, [])
 
@@ -72,27 +77,28 @@ const App = () => {
   return (
     <TypographyTheme>
       <Grid container spacing={2}>
-        <Grid xs={8}>
+        <Grid container xs={12} justifyContent="center">
           <Logo />
-        </Grid>
-        <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
-          <Box display="flex" justifyContent="center" alignItems="center">Login/Register</Box>
         </Grid>
         <Grid xs={12}>
           <Divider sx={{ backgroundColor: 'black', boxShadow: "0px 0px 10px gray" }} aria-hidden='true' />
         </Grid>
-        <Grid container rowSpacing={1} xs={12}>
-          {factCheckedArticles.map(article => (
+        <Grid container rowSpacing={1} xs={12} style={{ minHeight: '208px' }}>
+          {!isLoading ? factCheckedArticles.map(article => (
             <Grid key={article.id} xs={12}>
               <FactCheckLink article={article} />
             </Grid>
-          ))}
+          )) :
+            <Grid container xs={12} justifyContent="center" alignItems="center" style={{ minHeight: '208px' }}>
+              <CircularProgress />
+            </Grid>
+          }
         </Grid>
         <Grid xs={12}>
           <Divider sx={{ backgroundColor: 'black', boxShadow: "0px 0px 10px gray" }} aria-hidden='true' />
         </Grid>
-        <Grid xs={7}>
-          <Link href="https://github.com/stanley-utf8/healthy-ui">Learn more about this project</Link>
+        <Grid container justifyContent='center' alignItems='center' xs={7}>
+          <Link href="https://github.com/stanley-utf8/healthy-ui" target="_blank">Learn more about this project</Link>
         </Grid>
         <Grid xs={5}>
           <FormGroup>
@@ -100,7 +106,7 @@ const App = () => {
           </FormGroup>
         </Grid>
       </Grid>
-    </TypographyTheme>
+    </TypographyTheme >
   )
 }
 
