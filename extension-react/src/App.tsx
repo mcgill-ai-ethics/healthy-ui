@@ -122,6 +122,11 @@ const App = () => {
               Unable to fetch data for this video
             </Grid>
           }
+          {!isAntiSiloingQueryOption && dataFetchState == DataFetchState.NO_DATA_TO_BE_LOADED &&
+            <Grid container xs={12} justifyContent="center" alignItems='center' style={{ minHeight: '208px' }}>
+              No fact-checked articles for this video
+            </Grid>
+          }
           {!isAntiSiloingQueryOption && dataFetchState == DataFetchState.LOADING &&
             <Grid container xs={12} justifyContent="center" alignItems="center" style={{ minHeight: '208px' }}>
               <CircularProgress />

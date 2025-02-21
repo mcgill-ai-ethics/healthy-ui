@@ -45,7 +45,10 @@ export const fetchNewsFactCheck: FactCheckedArticlesQueryStatus = async (videoId
   try {
     const { data } = await axios.get(url)
     console.log(data);//test
-    if (Object.keys(data).length === 0 || data.error) {
+    if (Object.keys(data).length === 0) {
+      return { articles: null, status: DataFetchState.NO_DATA_TO_BE_LOADED }
+    }
+    else if (data.error) {
       return { articles: null, status: DataFetchState.UNSUCCESSFUL_DATA_FETCH };
     }
 
