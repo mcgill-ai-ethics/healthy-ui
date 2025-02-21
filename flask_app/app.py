@@ -225,7 +225,6 @@ def youtube_news(video_ids=None):
 
     res = video_service.get_youtube_blob_keywords(video_ids)
 
-    print(f"res value: {res}")#test
 
     json_results = {}
     for video_id in res:

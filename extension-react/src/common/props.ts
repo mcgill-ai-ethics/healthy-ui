@@ -1,5 +1,5 @@
-import { FactCheckedURL } from "./types";
+import { FactCheckedArticle } from "./types";
 
 export interface FactCheckLinkProps {
-  article: FactCheckedURL;
+  article: FactCheckedArticle;
 }

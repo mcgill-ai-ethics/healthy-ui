@@ -1,6 +1,8 @@
 // @ts-nocheck
 import axios from 'axios'
-import results from '../assets/results'
+import { DataFetchState } from '../common/enums'
+import { FactCheckedArticle, FactCheckedURL } from '../common/types'
+import trimFactCheckArticlesJsonData from '../utils/trimFactCheckArticlesJsonData'
 
 /*******************************************************
  * Define All API Calls Here
@@ -37,31 +39,22 @@ export const fetchVideosById = async (videoIds: string | string[] = []) => {
   return data
 }
 
-const cachedResult = (id) => {
-  const tempRes = results[id]
-  return [{ ...tempRes }]
-}
-
-export const fetchNewsFactCheck = async (videoIds: string | string[] = []) => {
-  const ids = Array.isArray(videoIds) ? videoIds : [videoIds]
-  const firstId = ids[0]
-  const encodedIds = encodeURIComponent(ids.join(','))
-  const url = `${apiHost}/yt/fc?ids=${encodedIds}`
+export const fetchNewsFactCheck: FactCheckedArticlesQueryStatus = async (videoId: string) => {
+  const url = `${apiHost}/yt/fc?ids=${videoId}`//testing
 
   try {
     const { data } = await axios.get(url)
-
-    // Check if data is empty and fallback to static data
+    console.log(data);//test
     if (Object.keys(data).length === 0 || data.error) {
-      console.log('Fallback to static data')
-      // Access static data based on firstId
-      return cachedResult(firstId)
+      return { articles: null, status: DataFetchState.UNSUCCESSFUL_DATA_FETCH };
     }
 
-    return data
-  } catch (error) {
-    console.log('Error fetching data, using static data')
-    // Handle error by returning static data based on firstId
-    return cachedResult(firstId)
+    const articles: FactCheckedArticle[] = trimFactCheckArticlesJsonData(data).slice(0, 6);
+
+    return { articles: articles, status: DataFetchState.SUCCESSFUL_DATA_FETCH }
+  }
+  catch (error) {
+    console.log(error)
+    return { articles: null, status: DataFetchState.UNSUCCESSFUL_DATA_FETCH };
   }
 }

@@ -164,15 +164,23 @@ def youtube_cc(ids):
 
 
 def youtube_transcript_most_replayed_cc(ids):
-    print(f"in youtube_transcript_most_replayed_cc", ids)
+    print(f"in youtube_transcript_most_replayed_cc", ids)#test
     id_array = (ctypes.c_char_p * len(ids))(*ids) 
+
+    google_api_key = os.getenv('GOOGLE_API_KEY')
+    if not google_api_key:
+        raise ValueError('GOOGLE_API_KEY not set in .env')
+    google_api_key_bytes = google_api_key.encode('utf-8')
+
     try:
-        result = yt_tr_mr_get_cc(id_array, len(ids))
+        result = yt_tr_mr_get_cc(id_array, len(ids), google_api_key_bytes)
+        print(f"result: {result}")#test
 
         print(f"Allocated memory after transcript most replayed: {get_alloc_count()}")
         
         if result:
             result_str = ctypes.cast(result, ctypes.c_char_p).value
+            print(f"result_str: {result_str}")#test
 
             assert result_str is not None, "result_str is None in youtube_transcript_most_replayed_cc"
             result_str = result_str.decode('utf-8')      

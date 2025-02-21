@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
-import { VideoURL, FactCheckedURL } from './common/types'
-import { DataFetchState, QueryOption } from './common/enums'
+import { VideoURL, FactCheckedArticle } from './common/types'
+import { DataFetchState } from './common/enums'
+import { fetchNewsFactCheck } from './api/api-calls'
 
 import Logo from './components/Logo'
 import TypographyTheme from './components/TypographyTheme'
@@ -52,8 +53,7 @@ const dummyData =
 
 
 const App = () => {
-  const [currVideoURL, setCurrVideoURL] = useState("");
-  const [factCheckedArticles, setFactCheckedArticles] = useState<FactCheckedURL[]>([]);
+  const [factCheckedArticles, setFactCheckedArticles] = useState<FactCheckedArticle[]>([]);
   const [dataFetchState, setDataFetchState] = useState<DataFetchState>(DataFetchState.WRONG_PAGE);
   const [isAntiSiloingQueryOption, setIsAntiSiloingQueryOption] = useState<boolean>(false);
 
@@ -66,15 +66,26 @@ const App = () => {
         return;
       }
 
-      setDataFetchState(DataFetchState.SUCCESSFUL_DATA_FETCH);//temporarely set to this until we have actual data fetch from the backend
-      setCurrVideoURL(data.url)
+      setDataFetchState(DataFetchState.SUCCESSFUL_VIDEO_URL_LOADED);
+      loadFactCheckArticles(data.url);
       console.log(data.url)//test
     })
   }, [isAntiSiloingQueryOption])
 
-  useEffect(() => {
-    setFactCheckedArticles(dummyData)
-  }, [])
+
+  const loadFactCheckArticles = async (currVideoURL: string) => {
+    setDataFetchState(DataFetchState.LOADING);
+
+    const videoId = currVideoURL.split("=")[1];
+    const { articles, status } = await fetchNewsFactCheck(videoId);
+
+    console.log(articles)//test
+
+    setDataFetchState(status)
+    if (status == DataFetchState.SUCCESSFUL_DATA_FETCH) {
+      setFactCheckedArticles(articles)
+    }
+  }
 
   const changeQueryOption = () => {
     if (isAntiSiloingQueryOption) {

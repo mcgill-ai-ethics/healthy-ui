@@ -397,7 +397,7 @@ func YoutubeGETtranscriptMostReplayedCC(_ids **C.char, idCount C.int) *C.char {
 	ids := CStrArrayToSlice(_ids, idCount)
 
 	// load backend port from .env file
-	err := godotenv.Load()
+	err := godotenv.Load("../.env")
 	if err != nil {
 		return C.CString(fmt.Sprintf("Error loading .env file: %v", err))
 	}

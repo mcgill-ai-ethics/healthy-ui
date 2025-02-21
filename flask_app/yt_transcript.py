@@ -165,7 +165,8 @@ def get_relevant_transcript(video_ids, tolerance_sec=20, option="asc"):
     for byte_id in video_ids: 
         video_id = byte_id.decode('utf-8')
 
-        print(res)
+        assert res != None, "Error in fetching most replayed cc from go interface"
+
         # Handle case where transcript is empty
         if res[video_id]["Transcript"]["transcript"] == None:
             transcript_list[video_id] = {
