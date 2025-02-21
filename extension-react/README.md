@@ -15,3 +15,7 @@ bundle the extension with interactive watch mode.
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+### ToDo
+- Need to add caching for articles
+- Need to make anti-siloing and fact-check pane as 2 distinct components
