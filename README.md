@@ -60,6 +60,9 @@ select 'load unpacked'
 navigate to the extension-react folder 
 choose the 'dist' directory 
 
+## Credits
+- Logo and Icon for the chrome extension are generate from the logo.com website
+
 ### ToDo
 #### Winter 2025
 - Finish implementing the videos fact-check articles
@@ -67,11 +70,14 @@ choose the 'dist' directory
   - Fix frontend extension code so that it runs on local host 
     - Display fact checked websites using the extension [Done]
     - Potentially always add it as a pop up when clicking a new youtube video [Done -> users are free to click the extension for fack check articles]
-    - Need to add caching at the frontend
-    - Add logo to extension 
+    - Need to add caching at the frontend [Done]
+    - Add logo to extension [Done]
+    - Create .env file 
   - Create pipelines to host website
     - Create docker container
-    - Host on remoter server (Heroku, Azure)
-  - Next step is to add an algorithm for anti-siloing
+    - Host on remoter server (Heroku, Azure, ...)
+  - Need to update fact-check algo and add anti-siloing algo
+    - Update fact-check algo to better match words
+    - Add anti-siloing algo
 
 - If time permits, start implementing the carbon emission tracker

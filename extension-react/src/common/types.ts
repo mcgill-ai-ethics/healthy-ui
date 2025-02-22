@@ -11,6 +11,11 @@ export type FactCheckedArticle = {
 }
 
 export type FactCheckedArticlesQueryStatus = {
-  articles: FactCheckedArticle,
+  articles: FactCheckedArticle[],
   status: DataFetchState
+}
+
+export type LocalStorageArticles = {
+  timeToLive: number,
+  articles: FactCheckedArticle[]
 }

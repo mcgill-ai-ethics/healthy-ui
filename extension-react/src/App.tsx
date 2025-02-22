@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { VideoURL, FactCheckedArticle } from './common/types'
+import { VideoURL, FactCheckedArticle, FactCheckedArticlesQueryStatus } from './common/types'
 import { DataFetchState } from './common/enums'
 import { fetchNewsFactCheck } from './api/api-calls'
 
@@ -77,12 +77,12 @@ const App = () => {
     setDataFetchState(DataFetchState.LOADING);
 
     const videoId = currVideoURL.split("=")[1];
-    const { articles, status } = await fetchNewsFactCheck(videoId);
+    const { articles, status }: FactCheckedArticlesQueryStatus = await fetchNewsFactCheck(videoId);
 
     console.log(articles)//test
 
     setDataFetchState(status)
-    if (status == DataFetchState.SUCCESSFUL_DATA_FETCH) {
+    if (status == DataFetchState.SUCCESSFUL_DATA_FETCH && articles.length != 0) {
       setFactCheckedArticles(articles)
     }
   }
