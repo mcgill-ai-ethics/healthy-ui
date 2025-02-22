@@ -64,10 +64,14 @@ choose the 'dist' directory
 #### Winter 2025
 - Finish implementing the videos fact-check articles
   - Fix the backend code to remove all inference errors [Done for now]
-    - Next step is to add a better algorithm to fact check (e.g. using ML)
-  - Fix frontend extension code so that it runs on local host
-    - Display fact checked websites using the extension
-    - Potentially always add it as a pop up when clicking a new youtube video
+  - Fix frontend extension code so that it runs on local host 
+    - Display fact checked websites using the extension [Done]
+    - Potentially always add it as a pop up when clicking a new youtube video [Done -> users are free to click the extension for fack check articles]
+    - Need to add caching at the frontend
+    - Add logo to extension 
   - Create pipelines to host website
+    - Create docker container
+    - Host on remoter server (Heroku, Azure)
+  - Next step is to add an algorithm for anti-siloing
 
 - If time permits, start implementing the carbon emission tracker

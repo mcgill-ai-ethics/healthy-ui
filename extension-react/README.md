@@ -18,4 +18,4 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ### ToDo
 - Need to add caching for articles
-- Need to make anti-siloing and fact-check pane as 2 distinct components
+- Need to make anti-siloing and fact-check pane as 2 distinct components (what would be best way?)
