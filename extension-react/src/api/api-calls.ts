@@ -1,16 +1,19 @@
 // @ts-nocheck
 import axios from 'axios'
+
 import { DataFetchState } from '../common/enums'
 import { FactCheckedArticle, FactCheckedURL, LocalStorageArticles } from '../common/types'
+
 import trimFactCheckArticlesJsonData from '../utils/trimFactCheckArticlesJsonData'
 
 /*******************************************************
  * Define All API Calls Here
  * then wrap them for use in your FR with react query
  *******************************************************/
-// @todo move this to env file
-// const apiHost = process.env.REACT_APP_BACKEND_HOST ?? 'http://127.0.0.1:5000'
-const apiHost = 'http://127.0.0.1:5000'
+
+
+const apiHost = process.env.BACKEND_API;
+console.log("api host: ", apiHost)//test
 const localStorageTimeToLive = 5 * 60 * 1000;
 
 // use this to do a basic check if the server is up and running
@@ -53,10 +56,9 @@ export const fetchNewsFactCheck: FactCheckedArticlesQueryStatus = async (videoId
       console.log("%s is null in local storage", videoId)
     }
 
-    console.log("ttl local storage: %d, time now: %d", localStorageArticles.timeToLive, currDate.getTime());//test
-    console.log("local storage data: " + localStorageArticles.articles)//test
-
     if (localStorageArticles !== null && localStorageArticles.timeToLive >= currDate.getTime()) {
+      console.log("ttl local storage: %d, time now: %d", localStorageArticles.timeToLive, currDate.getTime());//test
+      console.log("local storage data: " + localStorageArticles.articles)//test
       console.log("here in local storage check")//test
       if (localStorageArticles.articles.length === 0) {
         return { article: null, status: DataFetchState.NO_DATA_TO_BE_LOADED };

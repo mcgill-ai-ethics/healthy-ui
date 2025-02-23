@@ -1,6 +1,10 @@
+import webpack from 'webpack'
+
 import CopyPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+
 import path from 'path'
+import Dotenv from 'dotenv-webpack'
 
 export default {
   mode: "production",
@@ -14,6 +18,12 @@ export default {
     clean: true
   },
   plugins: [
+    new Dotenv({
+      path: '.env'
+    }),
+    new webpack.DefinePlugin({
+      'process.env.BACKEND_API': JSON.stringify(path.resolve("env.BACKEND_API"))
+    }),
     new HtmlWebpackPlugin({
       template: './src/index.html'
     }),

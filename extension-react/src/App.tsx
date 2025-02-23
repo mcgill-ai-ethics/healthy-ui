@@ -16,41 +16,6 @@ import Switch from '@mui/material/Switch'
 import FactCheckLink from './components/FactCheckLink'
 import CircularProgress from '@mui/material/CircularProgress';
 
-//test data -> to be replaced by fetch afterward
-const dummyData =
-  [
-    {
-      "id": "1",
-      "title": "What's with Trump's obsession with Greenland? | About That",
-      "url": "https://www.youtube.com/watch?v=uYPxb0veHUE"
-    },
-    {
-      "id": "2",
-      "title": "What would a Canada-U.S. tariff war actually look like? | About That",
-      "url": "https://www.youtube.com/watch?v=wkwb0YaHJEk"
-    },
-    {
-      "id": "3",
-      "title": "Why Economists Hate Trump's Tariff Plan | WSJ",
-      "url": "https://www.youtube.com/watch?v=_-eHOSq3oqI"
-    },
-    {
-      "id": "4",
-      "title": "Trump claims he had 'very good call' with Trudeau about tariffs",
-      "url": "https://www.youtube.com/watch?v=GHShm26y-AA"
-    },
-    {
-      "id": "5",
-      "title": "Mark Carney - Canada Not Interested in Trump's Offer & Liberal Leadership Prospects | The Daily Show",
-      "url": "https://www.youtube.com/watch?v=zs8St-fF0kE"
-    },
-    {
-      "id": "6",
-      "title": "Jon on Trump's Trade War, The War on DEI & Myth of 'Meritocracy' | The Daily Show",
-      "url": "https://www.youtube.com/watch?v=TLOuiApOnbw"
-    }
-  ]
-
 
 const App = () => {
   const [factCheckedArticles, setFactCheckedArticles] = useState<FactCheckedArticle[]>([]);
