@@ -67,12 +67,12 @@ choose the 'dist' directory
 #### Winter 2025
 - Finish implementing the videos fact-check articles
   - Fix the backend code to remove all inference errors [Done for now]
-  - Fix frontend extension code so that it runs on local host 
+  - Fix frontend extension code so that it runs on local host [Done]
     - Display fact checked websites using the extension [Done]
     - Potentially always add it as a pop up when clicking a new youtube video [Done -> users are free to click the extension for fack check articles]
     - Need to add caching at the frontend [Done]
     - Add logo to extension [Done]
-    - Create .env file 
+    - Create .env file [Done]
   - Create pipelines to host website
     - Create docker container
     - Host on remoter server (Heroku, Azure, ...)
@@ -81,3 +81,6 @@ choose the 'dist' directory
     - Add anti-siloing algo
 
 - If time permits, start implementing the carbon emission tracker
+
+### Known Issues
+- YoutTube videos accessed through the chrome recent history tab will not update fetch fact-checked articles for the video
