@@ -60,9 +60,6 @@ select 'load unpacked'
 navigate to the extension-react folder 
 choose the 'dist' directory 
 
-## Credits
-- Logo and Icon for the chrome extension are generate from the logo.com website
-
 ### Environment Variables
 Setup your environment variables in a .env file, and make sure it is located the root directory of this project
 ```
@@ -74,6 +71,9 @@ NEWS_API_KEY=<KEY>
 BACKEND_HOST=<HOST_NAME>
 PORT=<PORT_NUMBER>
 ```
+
+## Credits
+- Logo and Icon for the chrome extension are generate from the logo.com website
 
 ### ToDo
 #### Winter 2025
