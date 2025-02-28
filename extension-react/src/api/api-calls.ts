@@ -12,14 +12,15 @@ import trimFactCheckArticlesJsonData from '../utils/trimFactCheckArticlesJsonDat
  *******************************************************/
 
 
-const apiHost = process.env.BACKEND_API;
-console.log("api host: ", apiHost)//test
+const backendAPI = process.env.BACKEND_HOST + ":" + process.env.PORT;
+
+console.log("api host: ", backendAPI)//test
 const localStorageTimeToLive = 5 * 60 * 1000;
 
 // use this to do a basic check if the server is up and running
 // and responding to requests
 export const fetchTestData = async () => {
-  const { data } = await axios.get(`${apiHost}/`)
+  const { data } = await axios.get(`${backendAPI}/`)
   return data
 }
 
@@ -30,7 +31,7 @@ export const fetchTestData = async () => {
 export const fetchVideosById = async (videoIds: string | string[] = []) => {
   // default, no ids
   if (!videoIds.length) {
-    const url = `${apiHost}/api/video`
+    const url = `${backendAPI}/api/video`
     const { data } = await axios.get(url)
     return data
   }
@@ -38,13 +39,13 @@ export const fetchVideosById = async (videoIds: string | string[] = []) => {
   // handle single id or array of ids
   const ids = Array.isArray(videoIds) ? videoIds : [videoIds]
   const encodedIds = encodeURIComponent(ids.join(','))
-  const url = `${apiHost}/api/video?ids=${encodedIds}`
+  const url = `${backendAPI}/api/video?ids=${encodedIds}`
   const { data } = await axios.get(url)
   return data
 }
 
 export const fetchNewsFactCheck: FactCheckedArticlesQueryStatus = async (videoId: string) => {
-  const url = `${apiHost}/yt/fc?ids=${videoId}`//testing
+  const url = `${backendAPI}/yt/fc?ids=${videoId}`//testing
 
   try {
 

@@ -19,7 +19,7 @@ export default {
   },
   plugins: [
     new Dotenv({
-      path: '.env'
+      path: '../.env'
     }),
     new webpack.DefinePlugin({
       'process.env.BACKEND_API': JSON.stringify(path.resolve("env.BACKEND_API"))
