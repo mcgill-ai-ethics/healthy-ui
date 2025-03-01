@@ -22,17 +22,14 @@
 ### Python / Flask 
 
 #### via venv 
+```
+cd flask_app
+python3 -m venv .venv
+source .venv./bin/activate
+pip install -r requirements.txt
+```
 
-#### 1. create the venv 
-`$ python -m venv .venv`
-
-#### 2. activate it 
-`$ source .venv/bin/activate`
-
-#### 3. install reqs via pip 
-`pip install -r requirements.txt`
-
-#### 4. If the library.dll file is not present in the flask_app directory
+#### If the library.dll file is not present in the flask_app directory
 ```
 cd go
 go build -o library.dll -buildmode=c-shared main.go library.go c_youtube.go c_newsapi.go c_factcheck.go
