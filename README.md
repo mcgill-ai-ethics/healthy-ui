@@ -18,8 +18,12 @@
 
 `$ npm run start`
 
+### Backend via docker (Recommended)
+```
+docker compose up --build
+```
 
-### Python / Flask 
+### Python / Flask (w/o Docker)
 
 #### via venv 
 ```
@@ -36,8 +40,6 @@ go build -o library.dll -buildmode=c-shared main.go library.go c_youtube.go c_ne
 rm library.h
 mv library.dll ../flask_app
 ```
-#### via docker 
-
 
 ### EXTENSION
 

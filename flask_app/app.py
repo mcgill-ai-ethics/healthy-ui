@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-import subprocess
 import json
 import os
 import go_interface
@@ -8,8 +7,6 @@ import utils
 import yt_transcript  
 import keyword_ex
 from services import video_service
-from utils import assert_video_ids
-import threading 
 from pymongo import MongoClient
 
 trk = keyword_ex.TextRankKeyword()
@@ -21,8 +18,18 @@ CORS(app, supports_credentials=True, origins=['*'])
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-client = MongoClient('localhost', 27017)
+client = MongoClient('HealthyUI_DB', 27017)
+db = client.healthy_ui
+siloing_data = db.siloing_data
 
+# drop table on save/start of program -> remove this when production ready
+db.siloing_data.drop()
+
+# read json schema file and add it as validator
+with open("schemas/siloing_data_schema.json", "r") as file:
+    json_validator = json.load(file)
+
+db.create_collection('siloing_data', validator={'$jsonSchema': json_validator})
 
 @app.route("/api/fetch_siloing_data", methods=['GET'])
 def fetch_siloing_data():
@@ -44,18 +51,6 @@ def add_siliong_data():
         return 'Data saved', 201
 
 
-db = client.healthy_ui
-
-# drop table on save/start of program -> remove this when production ready
-db.siloing_data.drop()
-
-# read json schema file and add it as validator
-with open("schemas/siloing_data_schema.json", "r") as file:
-    json_validator = json.load(file)
-
-db.create_collection('siloing_data', validator={'$jsonSchema': json_validator})
-
-siloing_data = db.siloing_data
 
 #get video by id
 
@@ -349,4 +344,5 @@ if __name__ == '__main__':
     # note port is a reserved env variable in platform SH
     # @todo consolidate PORT + BACKEND_PORT
     port = int(os.getenv('PORT', 5000))
-    app.run(debug=True, port=port)
+    host = os.getenv('HOST', "http://127.0.0.1")
+    app.run(debug=True, host=host, port=port)

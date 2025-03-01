@@ -265,7 +265,7 @@ func YoutubeGETConcurrent(_ids **C.char, idCount C.int, _googleApiKey *C.char) *
 
 	googleApiKey := C.GoString(_googleApiKey)
 	if googleApiKey == "" {
-		return C.CString("Error: GOOGLE_API_KEY is empty")
+		return C.CString("ErOOGLE_API_KEY is empty")
 	}
 
 	var wg sync.WaitGroup
@@ -397,7 +397,7 @@ func YoutubeGETtranscriptMostReplayedCC(_ids **C.char, idCount C.int) *C.char {
 	ids := CStrArrayToSlice(_ids, idCount)
 
 	// load backend port from .env file
-	err := godotenv.Load("../.env")
+	err := godotenv.Load()
 	if err != nil {
 		return C.CString(fmt.Sprintf("Error loading .env file: %v", err))
 	}
