@@ -6,6 +6,8 @@ services:
       - 5000:5000
     env_file:
       - ./.env
+    volumes:
+      - '.:/app'
     environment:
       - MONGO_URI=mongodb://mongo:27017/healthy_ui 
 
