@@ -1,5 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from pymongo import MongoClient
+
 import json
 import os
 import go_interface
@@ -7,14 +9,15 @@ import utils
 import yt_transcript  
 import keyword_ex
 from services import video_service
-from pymongo import MongoClient
+from configuration import get_config
 
 trk = keyword_ex.TextRankKeyword()
 
 app = Flask(__name__)
+app.config.from_object(get_config())
 
 CORS(app, supports_credentials=True, origins=['*'])
-# ROUTE supports credentials option is bugging sometimes
+
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
@@ -49,8 +52,6 @@ def add_siliong_data():
         return "Error in saving data", 500
     else:
         return 'Data saved', 201
-
-
 
 #get video by id
 
