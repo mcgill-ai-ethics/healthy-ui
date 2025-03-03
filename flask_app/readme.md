@@ -1,4 +1,3 @@
-# Database Setup
 ### Running Flask Project
 ```
 python3 app.py

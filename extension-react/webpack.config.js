@@ -19,10 +19,11 @@ export default {
   },
   plugins: [
     new Dotenv({
-      path: '../.env'
+      path: './.env'
     }),
     new webpack.DefinePlugin({
-      'process.env.BACKEND_API': JSON.stringify(path.resolve("env.BACKEND_API"))
+      'process.env.BACKEND_HOST': JSON.stringify(path.resolve("env.BACKEND_HOST")),
+      'process.env.BACKEND_PORT': JSON.stringify(path.resolve("env.BACKEND_PORT"))
     }),
     new HtmlWebpackPlugin({
       template: './src/index.html'

@@ -7,7 +7,6 @@ import keyword_ex
 
 trk = keyword_ex.TextRankKeyword()
 
-import utils
 
 def get_most_replayed_sections(video_id):
     conn = http.client.HTTPSConnection("yt.lemnoslife.com")

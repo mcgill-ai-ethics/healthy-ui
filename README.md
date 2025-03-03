@@ -19,28 +19,27 @@
 `$ npm run start`
 
 
-### Python / Flask 
+### Python / Flask
 
 #### via venv 
+```
+cd flask_app
+python3 -m venv .venv
+source .venv./bin/activate
+```
 
-#### 1. create the venv 
-`$ python -m venv .venv`
-
-#### 2. activate it 
-`$ source .venv/bin/activate`
-
-#### 3. install reqs via pip 
-`pip install -r requirements.txt`
-
-#### 4. If the library.dll file is not present in the flask_app directory
+#### If the library.dll file is not present in the flask_app directory
 ```
 cd go
 go build -o library.dll -buildmode=c-shared main.go library.go c_youtube.go c_newsapi.go c_factcheck.go
 rm library.h
 mv library.dll ../flask_app
 ```
-#### via docker 
 
+#### Run Flask backend via docker (Recommended)
+```
+docker compose up --build
+```
 
 ### EXTENSION
 
@@ -61,7 +60,12 @@ navigate to the extension-react folder
 choose the 'dist' directory 
 
 ### Environment Variables
-Setup your environment variables in a .env file, and make sure it is located the root directory of this project
+Add the following .env file to your frontend/extension:
+```
+BACKEND_HOST=<HOST_NAME>
+PORT=<PORT_NUMBER>
+```
+And the following .env file for your Flask backend:
 ```
 GOOGLE_API_KEY=<KEY>
 CLIENT_ID=<ID>
@@ -70,6 +74,8 @@ NEWS_API_KEY=<KEY>
 
 BACKEND_HOST=<HOST_NAME>
 PORT=<PORT_NUMBER>
+
+ENV=DEV
 ```
 
 ## Credits
@@ -86,7 +92,7 @@ PORT=<PORT_NUMBER>
     - Add logo to extension [Done]
     - Create .env file [Done]
   - Create pipelines to host website
-    - Create docker container
+    - Create docker container [Done for Flask]
     - Host on remoter server (Heroku, Azure, ...)
   - Need to update fact-check algo and add anti-siloing algo
     - Update fact-check algo to better match words
