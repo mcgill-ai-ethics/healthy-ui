@@ -29,7 +29,7 @@ class DevelopmentConfig(Config):
 
 
 def get_config():
-    env = os.getenv("ENV", "DEV")
+    env = os.getenv("ENV", "PROD")
     
     if env == "DEV":
         return DevelopmentConfig 
