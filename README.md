@@ -78,6 +78,9 @@ PORT=<PORT_NUMBER>
 ENV=DEV
 ```
 
+### Notes for dev vs prod
+- To work in locally, you need to make sure the .env file is not ignored in .dockerignore
+
 ## Credits
 - Logo and Icon for the chrome extension are generate from the logo.com website
 
