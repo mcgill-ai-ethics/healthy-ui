@@ -1,8 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from pymongo import MongoClient
 
-import json
 import os
 import go_interface
 import utils
@@ -21,41 +19,8 @@ CORS(app, supports_credentials=True, origins=['*'])
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-client = MongoClient('HealthyUI_DB', 27017)
-db = client.healthy_ui
-siloing_data = db.siloing_data
-
-# drop table on save/start of program -> remove this when production ready
-db.siloing_data.drop()
-
-
-# read json schema file and add it as validator
-with open("schemas/siloing_data_schema.json", "r") as file:
-    json_validator = json.load(file)
-
-db.create_collection('siloing_data', validator={'$jsonSchema': json_validator})
-
-@app.route("/api/fetch_siloing_data", methods=['GET'])
-def fetch_siloing_data():
-    database_data = siloing_data.find()
-    result = []
-    for data in database_data:
-        result.append({'token_id': data['token_id'], 'platform': data['platform'], 'time': data['time']})
-    return jsonify(result)
-
-@app.route('/api/add_siloing_data', methods=['POST'])
-def add_siliong_data():
-    data = request.get_json()
-    
-    try:
-        siloing_data.insert_one(data)
-    except: 
-        return "Error in saving data", 500
-    else:
-        return 'Data saved', 201
 
 #get video by id
-
 # i.e if first time user opened the portal
 @app.route("/api/video", methods=['GET'])
 def get_videos_by_id():
@@ -347,4 +312,4 @@ if __name__ == '__main__':
     # @todo consolidate PORT + BACKEND_PORT
     port = int(os.getenv('PORT', 5000))
     host = os.getenv('HOST', "http://127.0.0.1")
-    app.run(debug=True, host=host, port=port)
+    app.run(debug=False, host=host, port=port)
