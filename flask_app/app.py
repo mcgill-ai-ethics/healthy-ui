@@ -28,6 +28,7 @@ siloing_data = db.siloing_data
 # drop table on save/start of program -> remove this when production ready
 db.siloing_data.drop()
 
+
 # read json schema file and add it as validator
 with open("schemas/siloing_data_schema.json", "r") as file:
     json_validator = json.load(file)

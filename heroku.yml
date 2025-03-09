@@ -1,3 +1,0 @@
-build:
-  docker:
-    web: flask_app/Dockerfile
