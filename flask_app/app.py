@@ -312,4 +312,4 @@ if __name__ == '__main__':
     # @todo consolidate PORT + BACKEND_PORT
     port = int(os.getenv('PORT', 5000))
     host = os.getenv('HOST', "0.0.0.0")
-    app.run(debug=False, host=host, port=port)
+    app.run(host=host, port=port)
