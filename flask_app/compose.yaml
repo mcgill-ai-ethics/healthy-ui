@@ -1,7 +1,10 @@
 services:
   flask-app:
     container_name: HealthyUI_Backend
-    build: .
+    build: 
+      context: .
+      args:
+        DOCKER_BUILDKIT: 1
     ports: 
       - 5000:5000
     env_file:
