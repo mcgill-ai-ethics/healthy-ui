@@ -8,8 +8,6 @@ import (
 	"os"
 	"sync"
 	"sync/atomic"
-
-	"github.com/joho/godotenv"
 )
 
 // #include <stdbool.h>
@@ -396,12 +394,6 @@ func youtubeGETtranscript(id string, port string) (TranscriptRes, error) {
 func YoutubeGETtranscriptMostReplayedCC(_ids **C.char, idCount C.int) *C.char {
 	ids := CStrArrayToSlice(_ids, idCount)
 
-	// load backend port from .env file
-	err := godotenv.Load()
-	if err != nil {
-		return C.CString(fmt.Sprintf("Error loading .env file: %v", err))
-	}
-
 	port := os.Getenv("PORT")
 	if port == "" {
 		return C.CString("Error: PORT is empty")
@@ -525,12 +517,6 @@ func youtubeGETrelevantTranscript(id string, port string) (RelevantTranscriptRes
 //export YoutubeGETrelevantTranscriptCC
 func YoutubeGETrelevantTranscriptCC(_ids **C.char, idCount C.int) *C.char {
 	ids := CStrArrayToSlice(_ids, idCount)
-
-	// load backend port from .env file
-	err := godotenv.Load()
-	if err != nil {
-		return C.CString(fmt.Sprintf("Error loading .env file: %v", err))
-	}
 
 	port := os.Getenv("PORT")
 	if port == "" {
