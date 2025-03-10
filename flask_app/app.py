@@ -311,5 +311,5 @@ if __name__ == '__main__':
     # note port is a reserved env variable in platform SH
     # @todo consolidate PORT + BACKEND_PORT
     port = int(os.environ.get('PORT', 5000))
-    host = os.environ.get('HOST', "0.0.0.0")
+    host = os.environ.get('HOST', '0.0.0.0')
     app.run(host=host, port=port)
