@@ -41,13 +41,15 @@ const App = () => {
   const loadFactCheckArticles = async (currVideoURL: string) => {
     setDataFetchState(DataFetchState.LOADING);
 
-    const videoId = currVideoURL.split("=")[1];
+    const videoId = currVideoURL.split("=")[1].substring(0, 11);
+    console.log("videoId in loadFactCheckArticles: %s", videoId)
     const { articles, status }: FactCheckedArticlesQueryStatus = await fetchNewsFactCheck(videoId);
 
-    console.log(articles)//test
+    console.log("articles after being retrived from either local or fetches from backend: ", articles)//test
+    console.log("status: " + status)
 
     setDataFetchState(status)
-    if (status == DataFetchState.SUCCESSFUL_DATA_FETCH && articles.length != 0) {
+    if (status == DataFetchState.SUCCESSFUL_DATA_FETCH && articles !== null) {
       setFactCheckedArticles(articles)
     }
   }
@@ -77,11 +79,12 @@ const App = () => {
             </Grid>
           }
           {!isAntiSiloingQueryOption && dataFetchState == DataFetchState.SUCCESSFUL_DATA_FETCH &&
-            factCheckedArticles.map(article => (
-              <Grid key={article.id} xs={12}>
-                <FactCheckLink article={article} />
-              </Grid>
-            ))}
+            <Grid container xs={12} rowSpacing={1} justifyContent='flex-start' >{
+              factCheckedArticles.map(article => (
+                <FactCheckLink key={article.id} article={article} />
+              ))}
+            </Grid>
+          }
           {!isAntiSiloingQueryOption && dataFetchState == DataFetchState.UNSUCCESSFUL_DATA_FETCH &&
             <Grid container xs={12} justifyContent="center" alignItems='center' style={{ minHeight: '208px' }}>
               Unable to fetch data for this video
