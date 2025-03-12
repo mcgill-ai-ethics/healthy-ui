@@ -6,6 +6,7 @@
 
 # Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
 
+ARG ENV=DEV
 ARG PYTHON_VERSION=3.10.12
 FROM python:${PYTHON_VERSION}-slim as base
 
@@ -47,4 +48,4 @@ ENV FLASK_APP=app.py
 EXPOSE 5000
 
 # Run the application.
-CMD ["/bin/bash", "-c", "gunicorn -w 3 --bind 0.0.0.0:5000 wsgi:app"]
+CMD ["/bin/bash", "-c", "gunicorn -w 3 --bind 0.0.0.0:$PORT wsgi:app"]
