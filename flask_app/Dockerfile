@@ -50,8 +50,7 @@ EXPOSE 5000
 
 # Run the application.
 RUN if ["$ENV" = "PROD"]; then\
-  CMD ["/bin/bash", "-c", "gunicorn -w 3 --bind 0.0.0.0:$PORT wsgi:app"]\
   rm ./.env;\
-else\
-  CMD ["/bin/bash", "-c", "gunicorn -w 3 --bind 0.0.0.0:5000 wsgi:app"]\
 fi
+
+CMD ["/bin/bash", "-c", "gunicorn -w 3 --bind 0.0.0.0:$PORT wsgi:app"]
