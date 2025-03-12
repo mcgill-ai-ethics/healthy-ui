@@ -12,8 +12,10 @@ import trimFactCheckArticlesJsonData from '../utils/trimFactCheckArticlesJsonDat
  *******************************************************/
 
 
-const backendAPI = process.env.BACKEND_HOST + ":" + process.env.PORT;
+const backendAPI = process.env.BACKEND_HOST + ":" + process.env.BACKEND_PORT;
 
+console.log("host is: %s", process.env.BACKEND_HOST)//test
+console.log("port is: %s", process.env.BACKEND_PORT)//test
 console.log("api host: ", backendAPI)//test
 const localStorageTimeToLive = 5 * 60 * 1000;
 
@@ -61,10 +63,11 @@ export const fetchNewsFactCheck: FactCheckedArticlesQueryStatus = async (videoId
       console.log("ttl local storage: %d, time now: %d", localStorageArticles.timeToLive, currDate.getTime());//test
       console.log("local storage data: " + localStorageArticles.articles)//test
       console.log("here in local storage check")//test
-      if (localStorageArticles.articles.length === 0) {
+      if (localStorageArticles.articles === null) {
         return { article: null, status: DataFetchState.NO_DATA_TO_BE_LOADED };
       }
-      return { article: localStorageArticles, status: DataFetchState.SUCCESSFUL_DATA_FETCH };
+      console.log("returned here after null check")//test
+      return { articles: localStorageArticles.articles, status: DataFetchState.SUCCESSFUL_DATA_FETCH };
     }
 
     const { data } = await axios.get(url)
