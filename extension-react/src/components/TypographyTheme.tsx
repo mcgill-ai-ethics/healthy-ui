@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react"
 
-import { CssBaseline, Typography } from "@mui/material"
+import { CssBaseline } from "@mui/material"
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material";
 

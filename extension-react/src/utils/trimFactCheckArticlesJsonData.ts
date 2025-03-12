@@ -5,7 +5,6 @@ const trimFactCheckArticlesJsonData = (data: any): FactCheckedArticle[] => {
 
   const findClaims = (data: any) => {
     if (data.hasOwnProperty("claimReview")) {
-      console.log("claimReview: " + data['claimReview']['url'])//test 
       claims.push({ id: data['claimReview'][0]['url'] + data['claimReview'][0]['title'], title: data['claimReview'][0]['title'], url: data['claimReview'][0]['url'] });
     }
 
@@ -18,7 +17,6 @@ const trimFactCheckArticlesJsonData = (data: any): FactCheckedArticle[] => {
 
   findClaims(data);
 
-  console.log(claims)//test
   return claims;
 }
 

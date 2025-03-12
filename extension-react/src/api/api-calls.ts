@@ -15,7 +15,6 @@ import environmentConfig from '../config/environmentConfiig'
 
 const backendAPI = environmentConfig();
 
-console.log("backend api: ", backendAPI)//test
 const localStorageTimeToLive = 5 * 60 * 1000;
 
 // use this to do a basic check if the server is up and running
@@ -53,19 +52,10 @@ export const fetchNewsFactCheck: FactCheckedArticlesQueryStatus = async (videoId
     const localStorageArticles: LocalStorageArticles = JSON.parse(localStorage.getItem(videoId));
     const currDate = new Date()
 
-    //test
-    if (localStorageArticles === null) {
-      console.log("%s is null in local storage", videoId)
-    }
-
     if (localStorageArticles !== null && localStorageArticles.timeToLive >= currDate.getTime()) {
-      console.log("ttl local storage: %d, time now: %d", localStorageArticles.timeToLive, currDate.getTime());//test
-      console.log("local storage data: " + localStorageArticles.articles)//test
-      console.log("here in local storage check")//test
       if (localStorageArticles.articles === null) {
         return { article: null, status: DataFetchState.NO_DATA_TO_BE_LOADED };
       }
-      console.log("returned here after null check")//test
       return { articles: localStorageArticles.articles, status: DataFetchState.SUCCESSFUL_DATA_FETCH };
     }
 
@@ -73,7 +63,6 @@ export const fetchNewsFactCheck: FactCheckedArticlesQueryStatus = async (videoId
     const articles: FactCheckedArticle[] = trimFactCheckArticlesJsonData(data).slice(0, 6);
 
     localStorage.setItem(videoId, JSON.stringify({ timeToLive: currDate.getTime() + localStorageTimeToLive, articles: articles }))
-    console.log("verifying local storage right after putting new data: ", localStorage.getItem(videoId))//test
 
     if (data.error) {
       return { articles: null, status: DataFetchState.UNSUCCESSFUL_DATA_FETCH };

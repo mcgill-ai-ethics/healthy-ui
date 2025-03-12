@@ -10,7 +10,8 @@ const FactCheckLink: React.FC<FactCheckLinkProps> = ({ article }) => {
       <Typography sx={{
         whiteSpace: 'nowrap',
         overflow: 'hidden',
-        textOverflow: 'ellipsis'
+        textOverflow: 'ellipsis',
+        my: 0.5
       }}>
         {article.title}
       </Typography>

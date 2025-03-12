@@ -16,6 +16,7 @@ import Switch from '@mui/material/Switch'
 import FactCheckLink from './components/FactCheckLink'
 import CircularProgress from '@mui/material/CircularProgress';
 
+import dummyData from './mock_data/dummy_url.json'
 
 const App = () => {
   const [factCheckedArticles, setFactCheckedArticles] = useState<FactCheckedArticle[]>([]);
@@ -23,8 +24,6 @@ const App = () => {
   const [isAntiSiloingQueryOption, setIsAntiSiloingQueryOption] = useState<boolean>(false);
 
   const hasAlreadyBeenLoaded = useRef(true);
-
-  const [hitUseEffect, setHitUseEffect] = useState<number>(0);//test
 
   useEffect(() => {
     if (!hasAlreadyBeenLoaded.current) {
@@ -39,13 +38,8 @@ const App = () => {
 
       setDataFetchState(DataFetchState.SUCCESSFUL_VIDEO_URL_LOADED);
       loadFactCheckArticles(data.url);
-      console.log(data.url)//test
     })
-
     hasAlreadyBeenLoaded.current = false;
-    //test
-    setHitUseEffect(hitUseEffect + 1);
-    console.log(hitUseEffect)
   }, [isAntiSiloingQueryOption])
 
 
@@ -53,11 +47,7 @@ const App = () => {
     setDataFetchState(DataFetchState.LOADING);
 
     const videoId = currVideoURL.split("=")[1].substring(0, 11);
-    console.log("videoId in loadFactCheckArticles: %s", videoId)
     const { articles, status }: FactCheckedArticlesQueryStatus = await fetchNewsFactCheck(videoId);
-
-    console.log("articles after being retrived from either local or fetches from backend: ", articles)//test
-    console.log("status: " + status)
 
     setDataFetchState(status)
     if (status == DataFetchState.SUCCESSFUL_DATA_FETCH && articles !== null) {
@@ -83,14 +73,14 @@ const App = () => {
         <Grid xs={12}>
           <Divider sx={{ backgroundColor: 'black', boxShadow: "0px 0px 10px gray" }} aria-hidden='true' />
         </Grid>
-        <Grid container rowSpacing={1} xs={12} style={{ minHeight: '208px' }}>
+        <Grid container xs={12} style={{ minHeight: '208px' }}>
           {isAntiSiloingQueryOption &&
             <Grid container xs={12} justifyContent="center" alignItems='center' style={{ minHeight: '208px', textAlign: 'center' }}>
               This feature has not been implemented yet.<br /> Come back later!!
             </Grid>
           }
           {!isAntiSiloingQueryOption && dataFetchState == DataFetchState.SUCCESSFUL_DATA_FETCH &&
-            <Grid xs={12} rowSpacing={1} justifyContent='center' >{
+            <Grid xs={12} >{
               factCheckedArticles.map(article => (
                 <FactCheckLink key={article.id} article={article} />
               ))}
