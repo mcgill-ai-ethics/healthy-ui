@@ -4,3 +4,7 @@ export enum DataFetchState {
 export enum QueryOption {
   FACT_CHECK, ANTI_SILOING
 }
+
+export enum Environment {
+  PROD = "PROD", DEV = "DEV"
+}

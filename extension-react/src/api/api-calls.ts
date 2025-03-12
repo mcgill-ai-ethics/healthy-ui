@@ -2,9 +2,10 @@
 import axios from 'axios'
 
 import { DataFetchState } from '../common/enums'
-import { FactCheckedArticle, FactCheckedURL, LocalStorageArticles } from '../common/types'
+import { FactCheckedArticle, LocalStorageArticles } from '../common/types'
 
 import trimFactCheckArticlesJsonData from '../utils/trimFactCheckArticlesJsonData'
+import environmentConfig from '../config/environmentConfiig'
 
 /*******************************************************
  * Define All API Calls Here
@@ -12,11 +13,9 @@ import trimFactCheckArticlesJsonData from '../utils/trimFactCheckArticlesJsonDat
  *******************************************************/
 
 
-const backendAPI = process.env.BACKEND_HOST + ":" + process.env.BACKEND_PORT;
+const backendAPI = environmentConfig();
 
-console.log("host is: %s", process.env.BACKEND_HOST)//test
-console.log("port is: %s", process.env.BACKEND_PORT)//test
-console.log("api host: ", backendAPI)//test
+console.log("backend api: ", backendAPI)//test
 const localStorageTimeToLive = 5 * 60 * 1000;
 
 // use this to do a basic check if the server is up and running
