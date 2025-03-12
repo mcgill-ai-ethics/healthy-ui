@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import { VideoURL, FactCheckedArticle, FactCheckedArticlesQueryStatus } from './common/types'
 import { DataFetchState } from './common/enums'
@@ -22,9 +22,15 @@ const App = () => {
   const [dataFetchState, setDataFetchState] = useState<DataFetchState>(DataFetchState.WRONG_PAGE);
   const [isAntiSiloingQueryOption, setIsAntiSiloingQueryOption] = useState<boolean>(false);
 
+  const hasAlreadyBeenLoaded = useRef(true);
 
-  // to be used a bit later
+  const [hitUseEffect, setHitUseEffect] = useState<number>(0);//test
+
   useEffect(() => {
+    if (!hasAlreadyBeenLoaded.current) {
+      return;
+    }
+
     chrome.storage.local.get('url', (data: VideoURL) => {
       if (!data.url.includes("youtube.com/watch")) {
         setDataFetchState(DataFetchState.WRONG_PAGE);
@@ -35,6 +41,11 @@ const App = () => {
       loadFactCheckArticles(data.url);
       console.log(data.url)//test
     })
+
+    hasAlreadyBeenLoaded.current = false;
+    //test
+    setHitUseEffect(hitUseEffect + 1);
+    console.log(hitUseEffect)
   }, [isAntiSiloingQueryOption])
 
 
@@ -79,7 +90,7 @@ const App = () => {
             </Grid>
           }
           {!isAntiSiloingQueryOption && dataFetchState == DataFetchState.SUCCESSFUL_DATA_FETCH &&
-            <Grid container xs={12} rowSpacing={1} justifyContent='flex-start' >{
+            <Grid xs={12} rowSpacing={1} justifyContent='center' >{
               factCheckedArticles.map(article => (
                 <FactCheckLink key={article.id} article={article} />
               ))}

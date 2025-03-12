@@ -47,4 +47,4 @@ ENV FLASK_APP=app.py
 EXPOSE 5000
 
 # Run the application.
-CMD ["/bin/bash", "-c", "gunicorn -w 3 --bind 0.0.0.0:$PORT wsgi:app"]
+CMD ["/bin/bash", "-c", "gunicorn -w 3 --bind 0.0.0.0:5000 wsgi:app"]
