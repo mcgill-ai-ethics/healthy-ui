@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-import os
 import go_interface
 import utils
 import yt_transcript  
@@ -18,7 +17,6 @@ CORS(app, supports_credentials=True, origins=['*'])
 
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-
 
 #get video by id
 # i.e if first time user opened the portal
@@ -310,6 +308,9 @@ def hello_world():
 if __name__ == '__main__':
     # note port is a reserved env variable in platform SH
     # @todo consolidate PORT + BACKEND_PORT
-    port = int(os.environ.get('PORT', 5000))
-    host = os.environ.get('HOST', '0.0.0.0')
-    app.run(host=host, port=port)
+    port = get_config().PORT
+    host = get_config().HOST
+    assert port != None
+    assert host != None
+
+    app.run(host=str(host), port=int(port), debug=get_config().DEBUG)

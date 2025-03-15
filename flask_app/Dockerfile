@@ -6,7 +6,7 @@
 
 # Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
 
-ARG ENV=PROD
+ARG ENV=DEV
 
 ARG PYTHON_VERSION=3.10.12
 FROM python:${PYTHON_VERSION}-slim as base
@@ -53,4 +53,8 @@ RUN if ["$ENV" = "PROD"]; then\
   rm ./.env;\
 fi
 
-CMD ["/bin/bash", "-c", "gunicorn -w 3 --bind 0.0.0.0:$PORT wsgi:app"]
+# Prod
+#CMD ["/bin/bash", "-c", "gunicorn -w 3 --bind 0.0.0.0:$PORT wsgi:app"]
+
+# Dev
+CMD ["python", "app.py"]
