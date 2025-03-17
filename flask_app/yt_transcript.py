@@ -158,7 +158,6 @@ def get_relevant_transcript(video_ids, tolerance_sec=20, option="asc"):
     # Splice link, Convert to bytes for C functions
 
     res = go_interface.youtube_transcript_most_replayed_cc(video_ids)
-   
 
     transcript_list = {}
     for byte_id in video_ids: 
@@ -179,7 +178,7 @@ def get_relevant_transcript(video_ids, tolerance_sec=20, option="asc"):
             if res[video_id]["MostReplayed"]["items"][0]["mostReplayed"]["markers"] is not None:
                 try:
                     timestamps = get_peak_rewatched_timestamps(res, video_id)
-                    print(timestamps)
+                    print("timestamps: ", timestamps)
                 except Exception as e:
                     print("No peak rewatched timestamps found")
                     timestamps = None

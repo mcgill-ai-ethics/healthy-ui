@@ -47,7 +47,7 @@ class TextRankKeyword():
                 token = sent[i]
 
                 # skip stopwords and punctuation
-                if token.is_stop or token.is_punct:
+                if token.is_stop or token.is_punct or not str(token).isalpha(): 
                     i += 1
                     continue
                 # named entity recognition NER
@@ -134,7 +134,6 @@ class TextRankKeyword():
                 window_size=4, lower=False, stopwords=list()):
         """Main function to analyze text"""
         
-        # Set stop words
         
         # Pare text by spaCy
         doc = nlp(text)

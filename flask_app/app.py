@@ -215,10 +215,10 @@ def youtube_fc(video_ids=None):
 
     res = video_service.get_youtube_blob_keywords(video_ids)
 
-
     json_results = {}
     for video_id in res:
         queries = res[video_id]["query_strings"]
+        print("queries: ",queries)#test
 
         queries = utils.strings_to_bytes(queries) 
         fact_checks = go_interface.fact_check_cc(queries)

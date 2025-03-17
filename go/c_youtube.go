@@ -263,7 +263,7 @@ func YoutubeGETConcurrent(_ids **C.char, idCount C.int, _googleApiKey *C.char) *
 
 	googleApiKey := C.GoString(_googleApiKey)
 	if googleApiKey == "" {
-		return C.CString("ErOOGLE_API_KEY is empty")
+		return C.CString("Error: OOGLE_API_KEY is empty")
 	}
 
 	var wg sync.WaitGroup
