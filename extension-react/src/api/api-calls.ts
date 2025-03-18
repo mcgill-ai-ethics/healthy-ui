@@ -4,7 +4,7 @@ import axios from 'axios'
 import { DataFetchState } from '../common/enums'
 import { FactCheckedArticle, LocalStorageArticles } from '../common/types'
 
-import trimFactCheckArticlesJsonData from '../utils/trimFactCheckArticlesJsonData'
+import { trimArticles, removeDuplicateArticles } from '../utils/trimFactCheckArticlesJsonData'
 import environmentConfig from '../config/environmentConfiig'
 
 /*******************************************************
@@ -60,7 +60,7 @@ export const fetchNewsFactCheck: FactCheckedArticlesQueryStatus = async (videoId
     }
 
     const { data } = await axios.get(url)
-    const articles: FactCheckedArticle[] = trimFactCheckArticlesJsonData(data).slice(0, 6);
+    const articles: FactCheckedArticle[] = removeDuplicateArticles(trimArticles(data)).slice(0, 6);
 
     localStorage.setItem(videoId, JSON.stringify({ timeToLive: currDate.getTime() + localStorageTimeToLive, articles: articles }))
 

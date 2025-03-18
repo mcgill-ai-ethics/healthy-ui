@@ -1,6 +1,6 @@
 import { FactCheckedArticle } from "../common/types";
 
-const trimFactCheckArticlesJsonData = (data: any): FactCheckedArticle[] => {
+export const trimArticles = (data: any): FactCheckedArticle[] => {
   const claims: FactCheckedArticle[] = []
 
   const findClaims = (data: any) => {
@@ -20,4 +20,12 @@ const trimFactCheckArticlesJsonData = (data: any): FactCheckedArticle[] => {
   return claims;
 }
 
-export default trimFactCheckArticlesJsonData
+export const removeDuplicateArticles = (data: FactCheckedArticle[]): FactCheckedArticle[] => {
+  return data.reduce((uniqueArticles: FactCheckedArticle[], article: FactCheckedArticle) => {
+    if (!uniqueArticles.some(uniqueArticle => uniqueArticle.title === article.title)) {
+      uniqueArticles.push(article)
+    }
+    return uniqueArticles;
+  }, [])
+}
+

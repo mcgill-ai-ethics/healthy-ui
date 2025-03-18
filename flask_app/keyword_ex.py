@@ -12,9 +12,11 @@ import yake
 import difflib
 
 
+from data import news_outlet_stop_words
 # https://readmedium.com/en/https:/towardsdatascience.com/textrank-for-keyword-extraction-by-python-c0bae21bcec0
 
 nlp = spacy.load('en_core_web_sm')
+news_outlet_stop_words = news_outlet_stop_words.get_news_outlet_stop_list()
 
 class TextRankKeyword():
     """Extract keywords from text"""
@@ -47,7 +49,7 @@ class TextRankKeyword():
                 token = sent[i]
 
                 # skip stopwords and punctuation
-                if token.is_stop or token.is_punct or not str(token).isalpha(): 
+                if token.is_stop or token.is_punct or not str(token).isalpha() or str(token) in news_outlet_stop_words: 
                     i += 1
                     continue
                 # named entity recognition NER
@@ -170,7 +172,13 @@ class TextRankKeyword():
         query_strings = []
         keyword_items = list(keywords.items())
         for q in range(num_q):
-            chosen_keywords = random.sample(keyword_items, keywords_per_q) # random.sample for uniqueness
+            chosen_keywords = []
+
+            if len(keyword_items) > 0:
+                if len(keyword_items) < keywords_per_q:
+                    chosen_keywords = random.choices(keyword_items, k=5)
+                else:
+                    chosen_keywords = random.sample(keyword_items, keywords_per_q) # random.sample for uniqueness
 
             # Reorder based on original keywords order
             chosen_keywords.sort(key=lambda x: x[1], reverse=True)
@@ -179,7 +187,6 @@ class TextRankKeyword():
             query_str = ' '.join(keyword for keyword, _ in chosen_keywords)
             query_strings.append(query_str)
             print(f"Query {q + 1} string:", query_str)
-            print()
 
         return query_strings    
             
