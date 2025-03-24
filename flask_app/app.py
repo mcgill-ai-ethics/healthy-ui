@@ -204,6 +204,36 @@ def youtube_news(video_ids=None):
     return jsonify(json_results)
 
 
+# ROUTE: Get anti-siloing articles related to youtube videos
+@app.route('/yt/a-s', methods=['GET'])
+def youtube_anti_siloing():
+    ids = request.args.get("ids")
+    video_ids, err, code = utils.assert_video_ids(ids)
+
+    if err:
+        return err, code
+
+    res = video_service.get_youtube_blob_keywords(video_ids)
+
+    json_results = {}
+    for video_id in res:
+        queries = res[video_id]["query_strings"]
+        print(f"queries: {queries}")
+
+        queries = utils.strings_to_bytes(queries) 
+        headlines = go_interface.news_api_cc(queries)
+        queries =  utils.bytes_to_strings(queries)
+        
+
+        json_results[video_id] = {
+            "query_strings": queries,
+            "headlines": headlines,
+        }
+
+    return jsonify(json_results)
+
+
+
 # ROUTE: Get fact checked related articles for a list of videos
 @app.route('/yt/fc', methods=['GET'])
 def youtube_fc(video_ids=None):
