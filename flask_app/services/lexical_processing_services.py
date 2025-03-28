@@ -16,14 +16,14 @@ def fetch_political_antonyms(query: str) -> str:
     antonym_words = []
 
     for word in query_words:
-        antonym = antonym_collection.find_one({"word1": word})
+        antonym = antonym_collection.find_one({"word1": {"$regex": word, "$options": "i"}})
 
         if antonym != None:
             print(f"word: {word} -> found in antonym_words collection")
             antonym_words.append(antonym["word2"])
             continue
 
-        antonym = antonym_collection.find_one({"word2": word})
+        antonym = antonym_collection.find_one({"word2": {"$regex": word, "$options": "i"}})
 
         if antonym != None:
             print(f"word: {word} -> found in antonym_words collection")
@@ -64,3 +64,4 @@ def fetch_political_antonyms(query: str) -> str:
             print(f"Unable to insert new antonym document into antonym collection: ${e}")
 
     return " ".join(antonym_words)
+

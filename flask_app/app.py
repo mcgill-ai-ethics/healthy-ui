@@ -218,19 +218,22 @@ def youtube_anti_siloing():
 
     json_results = {}
     for video_id in res:
-        queries = res[video_id]["query_strings"]
-        print(f"queries: {queries}")
+        initial_queries = res[video_id]["query_strings"]
+        antonym_queries = []
 
-        queries = utils.strings_to_bytes(queries) 
-        headlines = go_interface.news_api_cc(queries)
-        queries =  utils.bytes_to_strings(queries)
-        
+        print(f"initial queries: {initial_queries}")
+        for query in initial_queries:
+            antonym_queries.append(lexical_processing_services.fetch_political_antonyms(query))
+        print(f"antonym queries: {antonym_queries}")
+
+        queries = utils.strings_to_bytes(antonym_queries) 
+        headlines = go_interface.news_api_cc(antonym_queries)
+        queries =  utils.bytes_to_strings(antonym_queries)
 
         json_results[video_id] = {
             "query_strings": queries,
             "headlines": headlines,
         }
-
     return jsonify(json_results)
 
 
