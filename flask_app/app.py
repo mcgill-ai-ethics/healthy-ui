@@ -5,7 +5,8 @@ import go_interface
 import utils
 import yt_transcript  
 import keyword_ex
-from services import video_service
+
+from services import video_service, lexical_processing_services
 from configuration import get_config
 
 trk = keyword_ex.TextRankKeyword()
@@ -330,6 +331,17 @@ def news_api_cc(queries=None):
     queries = utils.strings_to_bytes(queries)
     res = go_interface.news_api_cc(queries)
     return jsonify(res)
+
+@app.route('/word_antonym_test', methods=['GET'])
+def fetch_antonym():
+    print("received antonym request")#test
+
+    word = request.args.get("word")
+
+    if word == None:
+        return jsonify({"error": "No word argument"}),400
+
+    return jsonify(lexical_processing_services.fetch_political_antonyms(word))
 
 @app.route('/', methods=['GET'])
 def hello_world():

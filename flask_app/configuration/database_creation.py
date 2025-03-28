@@ -1,17 +1,15 @@
+import os
 from pymongo import MongoClient
-import json
 
-def database_initialization():
-    client = MongoClient('HealthyUI_DB', 27017)
+from schemas import antonym_schema
+
+def get_db_connection():
+    client = MongoClient(os.getenv("DATABASE_URL"))
     db = client.healthy_ui
-    siloing_data = db.siloing_data
+    collection_name = "antonym_words"
 
-# drop table on save/start of program -> remove this when production ready
-    db.siloing_data.drop()
+    if collection_name not in db.list_collection_names():
+        db.create_collection(collection_name, validator={"$jsonSchema": antonym_schema.get_antonym_schema()})
 
+    return db
 
-# read json schema file and add it as validator
-    with open("schemas/siloing_data_schema.json", "r") as file:
-        json_validator = json.load(file)
-
-    db.create_collection('siloing_data', validator={'$jsonSchema': json_validator})
