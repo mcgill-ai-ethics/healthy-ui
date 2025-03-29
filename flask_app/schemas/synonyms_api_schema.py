@@ -24,7 +24,7 @@ def get_synonyms_api_schema():
                         "description": "Comma-separated synonyms for the term."
                     },
                     "antonyms": {
-                        "type": "string",
+                        "type": ["string", "object"],
                         "description": "Comma-separated antonyms for the term."
                     }
                 },
