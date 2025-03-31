@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 import { DataFetchState } from '../common/enums'
-import { FactCheckedArticle, LocalStorageArticles } from '../common/types'
+import { AntiSiloingArticle, AntiSiloingArticleQueryStatus, FactCheckedArticle, LocalStorageArticles } from '../common/types'
 
 import { trimArticles, removeDuplicateArticles } from '../utils/trimFactCheckArticlesJsonData'
 import environmentConfig from '../config/environmentConfiig'
@@ -44,12 +44,47 @@ export const fetchVideosById = async (videoIds: string | string[] = []) => {
   return data
 }
 
-export const fetchNewsFactCheck: FactCheckedArticlesQueryStatus = async (videoId: string) => {
-  const url = `${backendAPI}/yt/fc?ids=${videoId}`//testing
+export const fetchAntiSiloing: AntiSiloingArticleQueryStatus = async (videoId: string) => {
+  const url = `${backendAPI}/yt/a-s?ids=${videoId}`;
+  const localStorageKey: string = videoId + "a-s";
 
   try {
+    const localStorageArticles: LocalStorageArticles = JSON.parse(localStorage.getItem(localStorageKey));
+    const currDate = new Date();
 
-    const localStorageArticles: LocalStorageArticles = JSON.parse(localStorage.getItem(videoId));
+    if (localStorageArticles !== null && localStorageArticles.timeToLive >= currDate.getTime()) {
+      if (localStorageArticles.articles === null) {
+        return { article: null, status: DataFetchState.NO_DATA_TO_BE_LOADED };
+      }
+      return { articles: localStorageArticles.articles, status: DataFetchState.SUCCESSFUL_DATA_FETCH };
+    }
+
+    const { data } = await axios.get(url);
+    const articles: AntiSiloingArticle[] = removeDuplicateArticles(trimeArticles(data)).slice(0, 6);
+
+    localStorage.setItem(localStorageKey, JSON.stringify({ timeToLive: currDate.getTime() + localStorageTimeToLive, article: articles }));
+
+    if (data.error) {
+      return { articles: null, status: DataFetchState.UNSUCCESSFUL_DATA_FETCH };
+    }
+    if (Object.keys(data).length === 0) {
+      return { articles: null, status: DataFetchState.NO_DATA_TO_BE_LOADED };
+    }
+
+    return { articles: articles, status: DataFetchState.SUCCESSFUL_VIDEO_URL_LOADED };
+  }
+  catch (error) {
+    console.log(error)
+    return { articles: null, status: DataFetchState.UNSUCCESSFUL_DATA_FETCH };
+  }
+}
+
+export const fetchNewsFactCheck: FactCheckedArticlesQueryStatus = async (videoId: string) => {
+  const url = `${backendAPI}/yt/fc?ids=${videoId}`;
+  const localStorageKey: string = videoId + "fc";
+
+  try {
+    const localStorageArticles: LocalStorageArticles = JSON.parse(localStorage.getItem(localStorageKey));
     const currDate = new Date()
 
     if (localStorageArticles !== null && localStorageArticles.timeToLive >= currDate.getTime()) {
@@ -62,7 +97,7 @@ export const fetchNewsFactCheck: FactCheckedArticlesQueryStatus = async (videoId
     const { data } = await axios.get(url)
     const articles: FactCheckedArticle[] = removeDuplicateArticles(trimArticles(data)).slice(0, 6);
 
-    localStorage.setItem(videoId, JSON.stringify({ timeToLive: currDate.getTime() + localStorageTimeToLive, articles: articles }))
+    localStorage.setItem(localStorageKey, JSON.stringify({ timeToLive: currDate.getTime() + localStorageTimeToLive, articles: articles }))
 
     if (data.error) {
       return { articles: null, status: DataFetchState.UNSUCCESSFUL_DATA_FETCH };

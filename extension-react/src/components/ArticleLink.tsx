@@ -2,9 +2,9 @@ import React from 'react'
 import Typography from '@mui/material/Typography'
 import { Link } from '@mui/material'
 
-import { FactCheckLinkProps } from '../common/props'
+import { LinkProps } from '../common/props'
 
-const FactCheckLink: React.FC<FactCheckLinkProps> = ({ article }) => {
+const ArticleLink: React.FC<LinkProps> = ({ article }) => {
   return (
     <Link href={article.url} underline="hover" target="_blank">
       <Typography sx={{
@@ -18,4 +18,4 @@ const FactCheckLink: React.FC<FactCheckLinkProps> = ({ article }) => {
     </Link >
   )
 }
-export default FactCheckLink 
+export default ArticleLink 

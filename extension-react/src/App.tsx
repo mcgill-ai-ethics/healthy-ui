@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-import { VideoURL, FactCheckedArticle, FactCheckedArticlesQueryStatus } from './common/types'
-import { DataFetchState } from './common/enums'
-import { fetchNewsFactCheck } from './api/api-calls'
+import { VideoURL, FactCheckedArticle, FactCheckedArticlesQueryStatus, AntiSiloingArticlesQueryStatus } from './common/types'
+import { DataFetchState, QueryOption } from './common/enums'
+import { fetchNewsFactCheck, fetchAntiSiloing } from './api/api-calls'
 
 import Logo from './components/Logo'
 import TypographyTheme from './components/TypographyTheme'
@@ -13,10 +13,7 @@ import Link from '@mui/material/Link'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormGroup from '@mui/material/FormGroup'
 import Switch from '@mui/material/Switch'
-import FactCheckLink from './components/FactCheckLink'
-import CircularProgress from '@mui/material/CircularProgress';
-
-import dummyData from './mock_data/dummy_url.json'
+import Articles from './components/Articles'
 
 const App = () => {
   const [factCheckedArticles, setFactCheckedArticles] = useState<FactCheckedArticle[]>([]);
@@ -37,21 +34,33 @@ const App = () => {
       }
 
       setDataFetchState(DataFetchState.SUCCESSFUL_VIDEO_URL_LOADED);
-      loadFactCheckArticles(data.url);
+      if (isAntiSiloingQueryOption) {
+        loadArticles(data.url, QueryOption.ANTI_SILOING);
+      }
+      else {
+        loadArticles(data.url, QueryOption.FACT_CHECK);
+      }
     })
     hasAlreadyBeenLoaded.current = false;
   }, [isAntiSiloingQueryOption])
 
 
-  const loadFactCheckArticles = async (currVideoURL: string) => {
+  const loadArticles = async (currVideoURL: string, option: QueryOption) => {
     setDataFetchState(DataFetchState.LOADING);
 
     const videoId = currVideoURL.split("=")[1].substring(0, 11);
-    const { articles, status }: FactCheckedArticlesQueryStatus = await fetchNewsFactCheck(videoId);
+    let fetchResult: FactCheckedArticlesQueryStatus | AntiSiloingArticlesQueryStatus;
 
-    setDataFetchState(status)
-    if (status == DataFetchState.SUCCESSFUL_DATA_FETCH && articles !== null) {
-      setFactCheckedArticles(articles)
+    if (option === QueryOption.ANTI_SILOING) {
+      fetchResult = await fetchAntiSiloing(videoId);
+    }
+    else {
+      fetchResult = await fetchNewsFactCheck(videoId);
+    }
+
+    setDataFetchState(fetchResult.status)
+    if (fetchResult.status == DataFetchState.SUCCESSFUL_DATA_FETCH && fetchResult.articles !== null) {
+      setFactCheckedArticles(fetchResult.articles)
     }
   }
 
@@ -73,39 +82,15 @@ const App = () => {
         <Grid xs={12}>
           <Divider sx={{ backgroundColor: 'black', boxShadow: "0px 0px 10px gray" }} aria-hidden='true' />
         </Grid>
-        <Grid container xs={12} style={{ minHeight: '208px' }}>
+        <Grid container xs={12} justifyContent="center" style={{ minHeight: '208px' }}>
           {isAntiSiloingQueryOption &&
             <Grid container xs={12} justifyContent="center" alignItems='center' style={{ minHeight: '208px', textAlign: 'center' }}>
               This feature has not been implemented yet.<br /> Come back later!!
             </Grid>
           }
-          {!isAntiSiloingQueryOption && dataFetchState == DataFetchState.SUCCESSFUL_DATA_FETCH &&
-            <Grid xs={12} >{
-              factCheckedArticles.map(article => (
-                <FactCheckLink key={article.id} article={article} />
-              ))}
-            </Grid>
-          }
-          {!isAntiSiloingQueryOption && dataFetchState == DataFetchState.UNSUCCESSFUL_DATA_FETCH &&
-            <Grid container xs={12} justifyContent="center" alignItems='center' style={{ minHeight: '208px' }}>
-              Unable to fetch data for this video
-            </Grid>
-          }
-          {!isAntiSiloingQueryOption && dataFetchState == DataFetchState.NO_DATA_TO_BE_LOADED &&
-            <Grid container xs={12} justifyContent="center" alignItems='center' style={{ minHeight: '208px' }}>
-              No fact-checked articles for this video
-            </Grid>
-          }
-          {!isAntiSiloingQueryOption && dataFetchState == DataFetchState.LOADING &&
-            <Grid container xs={12} justifyContent="center" alignItems="center" style={{ minHeight: '208px' }}>
-              <CircularProgress />
-            </Grid>
-          }
-          {!isAntiSiloingQueryOption && dataFetchState == DataFetchState.WRONG_PAGE &&
-            <Grid container xs={12} justifyContent="center" alignItems='center' style={{ minHeight: '208px', textAlign: 'center' }}>
-              Not a YouTube video page.<br /> Navigate to a YouTube pages for articles.
-            </Grid>
-          }
+
+          {!isAntiSiloingQueryOption && <Articles fetchState={dataFetchState} articles={factCheckedArticles} />};
+
         </Grid>
         <Grid xs={12}>
           <Divider sx={{ backgroundColor: 'black', boxShadow: "0px 0px 10px gray" }} aria-hidden='true' />
