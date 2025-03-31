@@ -23,7 +23,6 @@ def fetch_political_antonyms(query: str) -> str:
         if antonym != None:
             print(f"word: {word} -> found in antonym_words collection")
             antonym_words.append(antonym["word2"])
-            continue
 
         antonym = antonym_collection.find_one({"word2": {"$regex": f"^{word}$", "$options": "i"}})
         if antonym != None:
@@ -47,7 +46,7 @@ def fetch_political_antonyms(query: str) -> str:
             print(f"Unable to fetch from synonyms api the antonym of {word}")
             continue
         
-        print("json: ",response.json())#test
+        print("synonyms.api query results: ",response.json())
         results = response.json()
         try:
             validate(instance=results, schema=synonyms_api_schema.get_synonyms_api_schema())
@@ -55,10 +54,15 @@ def fetch_political_antonyms(query: str) -> str:
             print(f"Validation error for synonyms api schema: {e.message}")
             continue
 
-        new_antonym = results["result"][0]["antonyms"]
+        new_antonym = ""
+        if isinstance(results["result"], list):
+            new_antonym = results["result"][0]["antonyms"]
+        else:
+            new_antonym = results["result"]["antonyms"]
+
         if new_antonym == None or not new_antonym:
-            print(f"Not antonym for {word}")
-            new_antonym_object = {"word1": word, "word2": ""} 
+            print(f"No antonym for {word}")
+            new_antonym_object = {"word1": word, "word2": word} # no antonym means using initial word for now 
             antonym_words.append(word)
         else:
             new_antonym = new_antonym.split(",")[0]

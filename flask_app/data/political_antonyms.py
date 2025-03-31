@@ -32,6 +32,23 @@ def get_political_antonyms():
             "word1": "CAQ",
             "word2": "Liberal",
         },
+        {
+            "word1": "Putin",
+            "word2": "Trump"
+        },
+        {
+            "word1": "Vladimir",
+            "word2": "Donald"
+        },
+        {
+            "word1": "Russia",
+            "word2": "US"
+        },
+        {
+            "word1": "Ukraine",
+            "word2": "Russia",
+        },
+        
     ]
 
 

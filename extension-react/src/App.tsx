@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-import { VideoURL, FactCheckedArticle, FactCheckedArticlesQueryStatus, AntiSiloingArticlesQueryStatus } from './common/types'
+import { VideoURL, Article, ArticlesQueryStatus } from './common/types'
 import { DataFetchState, QueryOption } from './common/enums'
-import { fetchNewsFactCheck, fetchAntiSiloing } from './api/api-calls'
+import { fetchAntiSiloing, fetchNewsFactCheck } from './api/api-calls'
 
 import Logo from './components/Logo'
 import TypographyTheme from './components/TypographyTheme'
@@ -16,14 +16,15 @@ import Switch from '@mui/material/Switch'
 import Articles from './components/Articles'
 
 const App = () => {
-  const [factCheckedArticles, setFactCheckedArticles] = useState<FactCheckedArticle[]>([]);
+  const [factCheckedArticles, setFactCheckedArticles] = useState<Article[]>([]);
+  const [antiSiloingArticles, setAntiSiloingArticles] = useState<Article[]>([]);
   const [dataFetchState, setDataFetchState] = useState<DataFetchState>(DataFetchState.WRONG_PAGE);
   const [isAntiSiloingQueryOption, setIsAntiSiloingQueryOption] = useState<boolean>(false);
 
-  const hasAlreadyBeenLoaded = useRef(true);
+  const hasNotBeenLoaded = useRef(true);
 
   useEffect(() => {
-    if (!hasAlreadyBeenLoaded.current) {
+    if (!hasNotBeenLoaded.current) {
       return;
     }
 
@@ -41,7 +42,7 @@ const App = () => {
         loadArticles(data.url, QueryOption.FACT_CHECK);
       }
     })
-    hasAlreadyBeenLoaded.current = false;
+    hasNotBeenLoaded.current = false;
   }, [isAntiSiloingQueryOption])
 
 
@@ -49,7 +50,7 @@ const App = () => {
     setDataFetchState(DataFetchState.LOADING);
 
     const videoId = currVideoURL.split("=")[1].substring(0, 11);
-    let fetchResult: FactCheckedArticlesQueryStatus | AntiSiloingArticlesQueryStatus;
+    let fetchResult: ArticlesQueryStatus;
 
     if (option === QueryOption.ANTI_SILOING) {
       fetchResult = await fetchAntiSiloing(videoId);
@@ -57,10 +58,16 @@ const App = () => {
     else {
       fetchResult = await fetchNewsFactCheck(videoId);
     }
+    console.log(fetchResult);//test
 
     setDataFetchState(fetchResult.status)
     if (fetchResult.status == DataFetchState.SUCCESSFUL_DATA_FETCH && fetchResult.articles !== null) {
-      setFactCheckedArticles(fetchResult.articles)
+      if (option === QueryOption.ANTI_SILOING) {
+        setAntiSiloingArticles(fetchResult.articles);
+      }
+      else {
+        setFactCheckedArticles(fetchResult.articles);
+      }
     }
   }
 
@@ -71,6 +78,7 @@ const App = () => {
     else {
       setIsAntiSiloingQueryOption(true);
     }
+    hasNotBeenLoaded.current = true;
   }
 
   return (
@@ -83,14 +91,8 @@ const App = () => {
           <Divider sx={{ backgroundColor: 'black', boxShadow: "0px 0px 10px gray" }} aria-hidden='true' />
         </Grid>
         <Grid container xs={12} justifyContent="center" style={{ minHeight: '208px' }}>
-          {isAntiSiloingQueryOption &&
-            <Grid container xs={12} justifyContent="center" alignItems='center' style={{ minHeight: '208px', textAlign: 'center' }}>
-              This feature has not been implemented yet.<br /> Come back later!!
-            </Grid>
-          }
-
+          {isAntiSiloingQueryOption && <Articles fetchState={dataFetchState} articles={antiSiloingArticles} />}
           {!isAntiSiloingQueryOption && <Articles fetchState={dataFetchState} articles={factCheckedArticles} />};
-
         </Grid>
         <Grid xs={12}>
           <Divider sx={{ backgroundColor: 'black', boxShadow: "0px 0px 10px gray" }} aria-hidden='true' />

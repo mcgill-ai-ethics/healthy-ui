@@ -171,13 +171,17 @@ class TextRankKeyword():
     def generate_query_strings(self, keywords, num_q=3, keywords_per_q=5):
         query_strings = []
         keyword_items = list(keywords.items())
+        print("keywords_items: ",keyword_items)
+
         for q in range(num_q):
             chosen_keywords = []
 
             if len(keyword_items) > 0:
                 if len(keyword_items) < keywords_per_q:
-                    chosen_keywords = random.choices(keyword_items, k=5)
+                    print("Not enough keywords for unique sampling, using sampling with repeat")
+                    chosen_keywords = random.choices(keyword_items, k=3)
                 else:
+                    print("Enough keywords for unique sampling")
                     chosen_keywords = random.sample(keyword_items, keywords_per_q) # random.sample for uniqueness
 
             # Reorder based on original keywords order

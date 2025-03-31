@@ -3,7 +3,7 @@ def get_synonyms_api_schema():
     "type": "object",
     "properties": {
         "result": {
-            "type": "array",
+            "type": ["array", "object"],
             "items": {
                 "type": "object",
                 "properties": {

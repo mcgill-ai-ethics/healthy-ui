@@ -1,10 +1,10 @@
 import { DataFetchState } from "./enums";
-import { AntiSiloingArticle, FactCheckedArticle } from "./types";
+import { Article } from "./types";
 
 export interface LinkProps {
-  article: FactCheckedArticle | AntiSiloingArticle;
+  article: Article
 }
 export interface DataFetchStateProps {
   fetchState: DataFetchState,
-  articles: FactCheckedArticle[] | AntiSiloingArticle[]
+  articles: Article[]
 }
