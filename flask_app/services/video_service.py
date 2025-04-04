@@ -101,7 +101,6 @@ def get_youtube_blob_keywords(video_ids):
     video_ids = yt_transcript.extract_ids(video_ids)
     vid_data = go_interface.youtube_cc(video_ids)
     transcripts = yt_transcript.get_relevant_transcript(video_ids)
-    print("here")#test
     
     json_results = {}
     if not vid_data:
@@ -151,7 +150,7 @@ def get_youtube_blob_keywords(video_ids):
                                 best_keywords[c] = score * s
             
         # How many queries to generate, and how many keywords per query
-        query_strings = trk.generate_query_strings(best_keywords, 3, 2)
+        query_strings = trk.generate_query_strings(best_keywords, 3, 3)
         query_strings = list(query_strings)
 
         print("query_strings: ",query_strings)

@@ -21,13 +21,18 @@ def fetch_political_antonyms(query: str) -> str:
 
         antonym = antonym_collection.find_one({"word1": {"$regex": f"^{word}$", "$options": "i"}})
         if antonym != None:
-            print(f"word: {word} -> found in antonym_words collection")
-            antonym_words.append(antonym["word2"])
+            word_antonym = antonym["word2"]
+            print(f"word: {word} -> found in antonym_words collection with antonym: {word_antonym}")
+
+            antonym_words.append(word_antonym)
+            continue
 
         antonym = antonym_collection.find_one({"word2": {"$regex": f"^{word}$", "$options": "i"}})
         if antonym != None:
-            print(f"word: {word} -> found in antonym_words collection")
-            antonym_words.append(antonym["word1"])
+            word_antonym = antonym["word1"]
+            print(f"word: {word} -> found in antonym_words collection with antonym: {word_antonym}")
+
+            antonym_words.append(word_antonym)
             continue
 
         synonyms_api_params = {
