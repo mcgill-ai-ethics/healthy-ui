@@ -5,20 +5,20 @@ from schemas import antonym_schema
 #from data import political_antonyms
 
 def get_db_connection():
-    port = os.getenv("DATABASE_PORT")
-    assert port != None
+    database_url = os.getenv("DATABASE_URL")
+    client = MongoClient()
 
-    client = MongoClient(host=os.getenv("DATABASE_HOST"), port=int(port), authSource=os.getenv("DATABASE_AUTH"))
+    try:
+        client = MongoClient(database_url)
+    except Exception as e:
+        print(f"Unable to connect to remote database: {e}")
+
     db = client.healthy_ui
     collection_name = "antonym_words"
 
     if collection_name not in db.list_collection_names():
+        print("new antonym colelction with using schema created")
         db.create_collection(collection_name, validator={"$jsonSchema": antonym_schema.get_antonym_schema()})
-#        collection = db.antonym_words
-#
-#        political_antonyms_list = political_antonyms.get_political_antonyms()
-#        for word_object in political_antonyms_list:
-#            collection.insert_one({"word1": word_object["word1"], "word2": word_object["word2"]})
 
     return db
 
