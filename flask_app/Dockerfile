@@ -56,7 +56,7 @@ RUN if ["$ENV" = "PROD"]; then\
 fi
 
 # Prod
-#CMD ["/bin/bash", "-c", "gunicorn -w 3 --bind 0.0.0.0:$PORT wsgi:app"]
+CMD ["/bin/bash", "-c", "gunicorn -w 3 --bind 0.0.0.0:$PORT wsgi:app"]
 
 # Dev
-CMD ["python", "app.py"]
+#CMD ["python", "app.py"]
