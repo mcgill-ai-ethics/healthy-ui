@@ -2,9 +2,9 @@
 import axios from 'axios'
 
 import { DataFetchState } from '../common/enums'
-import { FactCheckedArticle, LocalStorageArticles } from '../common/types'
+import { ArticlesQueryStatus, LocalStorageArticles } from '../common/types'
 
-import trimFactCheckArticlesJsonData from '../utils/trimFactCheckArticlesJsonData'
+import { removeDuplicateArticles, trimFactCheckArticles, trimAntiSiloingArticles } from '../utils/trimArticlesJsonData'
 import environmentConfig from '../config/environmentConfiig'
 
 /*******************************************************
@@ -44,25 +44,69 @@ export const fetchVideosById = async (videoIds: string | string[] = []) => {
   return data
 }
 
-export const fetchNewsFactCheck: FactCheckedArticlesQueryStatus = async (videoId: string) => {
-  const url = `${backendAPI}/yt/fc?ids=${videoId}`//testing
+export const fetchAntiSiloing: ArticlesQueryStatus = async (videoId: string) => {
+  const url = `${backendAPI}/yt/a-s?ids=${videoId}`;
+  const localStorageKey: string = videoId + "a-s";
 
   try {
-
-    const localStorageArticles: LocalStorageArticles = JSON.parse(localStorage.getItem(videoId));
-    const currDate = new Date()
+    const localStorageArticles: LocalStorageArticles = JSON.parse(localStorage.getItem(localStorageKey));
+    const currDate = new Date();
 
     if (localStorageArticles !== null && localStorageArticles.timeToLive >= currDate.getTime()) {
+      console.log("fetching from local storage for anti-siloing articles")
+
       if (localStorageArticles.articles === null) {
-        return { article: null, status: DataFetchState.NO_DATA_TO_BE_LOADED };
+        return { articles: null, status: DataFetchState.NO_DATA_TO_BE_LOADED };
       }
       return { articles: localStorageArticles.articles, status: DataFetchState.SUCCESSFUL_DATA_FETCH };
     }
 
-    const { data } = await axios.get(url)
-    const articles: FactCheckedArticle[] = trimFactCheckArticlesJsonData(data).slice(0, 6);
+    console.log("Querying anti-siloing articles")
+    const { data } = await axios.get(url);
+    console.log("a-s data: ", data);//test
+    const articles: Article[] = removeDuplicateArticles(trimAntiSiloingArticles(data)).slice(0, 6);
 
-    localStorage.setItem(videoId, JSON.stringify({ timeToLive: currDate.getTime() + localStorageTimeToLive, articles: articles }))
+    localStorage.setItem(localStorageKey, JSON.stringify({ timeToLive: currDate.getTime() + localStorageTimeToLive, articles: articles }));
+
+    if (data.error) {
+      return { articles: null, status: DataFetchState.UNSUCCESSFUL_DATA_FETCH };
+    }
+    if (Object.keys(data).length === 0) {
+      return { articles: null, status: DataFetchState.NO_DATA_TO_BE_LOADED };
+    }
+
+    return { articles: articles, status: DataFetchState.SUCCESSFUL_DATA_FETCH };
+  }
+  catch (error) {
+    console.log(error)
+    return { articles: null, status: DataFetchState.UNSUCCESSFUL_DATA_FETCH };
+  }
+}
+
+export const fetchNewsFactCheck: ArticlesQueryStatus = async (videoId: string) => {
+  const url = `${backendAPI}/yt/fc?ids=${videoId}`;
+  const localStorageKey: string = videoId + "fc";
+
+  try {
+    const localStorageArticles: LocalStorageArticles = JSON.parse(localStorage.getItem(localStorageKey));
+    const currDate = new Date()
+
+    if (localStorageArticles !== null && localStorageArticles.timeToLive >= currDate.getTime()) {
+      console.log("fetching from local storage for fact-checked articles")
+
+      if (localStorageArticles.articles === null) {
+        return { articles: null, status: DataFetchState.NO_DATA_TO_BE_LOADED };
+      }
+      return { articles: localStorageArticles.articles, status: DataFetchState.SUCCESSFUL_DATA_FETCH };
+    }
+
+
+    console.log("Querying fact-check articles")
+    const { data } = await axios.get(url)
+    console.log("data in factcheck ", data);//test
+    const articles: Articles[] = removeDuplicateArticles(trimFactCheckArticles(data)).slice(0, 6);
+
+    localStorage.setItem(localStorageKey, JSON.stringify({ timeToLive: currDate.getTime() + localStorageTimeToLive, articles: articles }))
 
     if (data.error) {
       return { articles: null, status: DataFetchState.UNSUCCESSFUL_DATA_FETCH };
@@ -70,7 +114,6 @@ export const fetchNewsFactCheck: FactCheckedArticlesQueryStatus = async (videoId
     if (Object.keys(data).length === 0) {
       return { articles: null, status: DataFetchState.NO_DATA_TO_BE_LOADED }
     }
-
 
     return { articles: articles, status: DataFetchState.SUCCESSFUL_DATA_FETCH }
   }

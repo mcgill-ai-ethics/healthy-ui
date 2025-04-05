@@ -1,5 +1,10 @@
-import { FactCheckedArticle } from "./types";
+import { DataFetchState } from "./enums";
+import { Article } from "./types";
 
-export interface FactCheckLinkProps {
-  article: FactCheckedArticle;
+export interface LinkProps {
+  article: Article
+}
+export interface DataFetchStateProps {
+  fetchState: DataFetchState,
+  articles: Article[]
 }

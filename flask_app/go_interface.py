@@ -180,7 +180,7 @@ def youtube_transcript_most_replayed_cc(ids):
         
         if result:
             result_str = ctypes.cast(result, ctypes.c_char_p).value
-            print(f"result_str: {result_str}")#test
+            #print(f"result_str: {result_str}")#test
 
             assert result_str is not None, "result_str is None in youtube_transcript_most_replayed_cc"
             result_str = result_str.decode('utf-8')      
@@ -227,6 +227,11 @@ def youtube_relevant_transcript_cc(ids):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
         print(f"Error type: {type(e)}")
+
+# trim the received keywords from from transcript
+def trim_transcript_queries(queries):
+    print()
+
 
 
 

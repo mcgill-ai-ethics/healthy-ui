@@ -4,18 +4,19 @@ export type VideoURL = {
   url: string
 }
 
-export type FactCheckedArticle = {
+export type Article = {
   id: string,
   title: string,
   url: string
 }
 
-export type FactCheckedArticlesQueryStatus = {
-  articles: FactCheckedArticle[],
+export type ArticlesQueryStatus = {
+  articles: Article[],
   status: DataFetchState
 }
 
+
 export type LocalStorageArticles = {
   timeToLive: number,
-  articles: FactCheckedArticle[]
+  articles: Article[]
 }

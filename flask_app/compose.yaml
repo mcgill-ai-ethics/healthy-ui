@@ -8,13 +8,19 @@ services:
       - ./.env
     volumes:
       - '.:/app'
-    #      environment:
-    #      - MONGO_URI=mongodb://mongo:27017/healthy_ui 
+    depends_on:
+      - mongodb
+    links: 
+      - mongodb
 
-  #  mongodb:
-  #    image: mongo:latest
-  #    container_name: HealthyUI_DB 
-  #    ports: 
-  #      - 27017:27017 
-  #    environment: 
-  #      MONGO_INITDB_DATABASE: healthy_ui
+  mongodb:
+    image: mongo:latest
+    container_name: HealthyUI_DB 
+    hostname: healthy_ui
+    ports: 
+     - 27017:27017 
+    environment: 
+      - MONGO_INITDB_DATABASE=healthy_ui
+    volumes:
+      - ./mongo-data:/data/db
+

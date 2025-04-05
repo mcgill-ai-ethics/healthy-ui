@@ -1,12 +1,12 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-import os
 import go_interface
 import utils
 import yt_transcript  
 import keyword_ex
-from services import video_service
+
+from services import video_service, lexical_processing_services
 from configuration import get_config
 
 trk = keyword_ex.TextRankKeyword()
@@ -18,7 +18,6 @@ CORS(app, supports_credentials=True, origins=['*'])
 
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-
 
 #get video by id
 # i.e if first time user opened the portal
@@ -206,6 +205,39 @@ def youtube_news(video_ids=None):
     return jsonify(json_results)
 
 
+# ROUTE: Get anti-siloing articles related to youtube videos
+@app.route('/yt/a-s', methods=['GET'])
+def youtube_anti_siloing():
+    ids = request.args.get("ids")
+    video_ids, err, code = utils.assert_video_ids(ids)
+
+    if err:
+        return err, code
+
+    res = video_service.get_youtube_blob_keywords(video_ids)
+
+    json_results = {}
+    for video_id in res:
+        initial_queries = res[video_id]["query_strings"]
+        antonym_queries = []
+
+        print(f"initial queries: {initial_queries}")
+        for query in initial_queries:
+            antonym_queries.append(lexical_processing_services.fetch_political_antonyms(query))
+        print(f"antonym queries: {antonym_queries}")
+
+        queries = utils.strings_to_bytes(antonym_queries) 
+        headlines = go_interface.news_api_cc(antonym_queries)
+        queries =  utils.bytes_to_strings(antonym_queries)
+
+        json_results[video_id] = {
+            "query_strings": queries,
+            "headlines": headlines,
+        }
+    return jsonify(json_results)
+
+
+
 # ROUTE: Get fact checked related articles for a list of videos
 @app.route('/yt/fc', methods=['GET'])
 def youtube_fc(video_ids=None):
@@ -217,10 +249,10 @@ def youtube_fc(video_ids=None):
 
     res = video_service.get_youtube_blob_keywords(video_ids)
 
-
     json_results = {}
     for video_id in res:
         queries = res[video_id]["query_strings"]
+        print("queries: ",queries)#test
 
         queries = utils.strings_to_bytes(queries) 
         fact_checks = go_interface.fact_check_cc(queries)
@@ -303,6 +335,17 @@ def news_api_cc(queries=None):
     res = go_interface.news_api_cc(queries)
     return jsonify(res)
 
+@app.route('/word_antonym_test', methods=['GET'])
+def fetch_antonym():
+    print("received antonym request")#test
+
+    word = request.args.get("word")
+
+    if word == None:
+        return jsonify({"error": "No word argument"}),400
+
+    return jsonify(lexical_processing_services.fetch_political_antonyms(word))
+
 @app.route('/', methods=['GET'])
 def hello_world():
     return "Welcome to the flask backend"
@@ -310,6 +353,9 @@ def hello_world():
 if __name__ == '__main__':
     # note port is a reserved env variable in platform SH
     # @todo consolidate PORT + BACKEND_PORT
-    port = int(os.environ.get('PORT', 5000))
-    host = os.environ.get('HOST', '0.0.0.0')
-    app.run(host=host, port=port)
+    port = get_config().PORT
+    host = get_config().HOST
+    assert port != None
+    assert host != None
+
+    app.run(host=str(host), port=int(port), debug=get_config().DEBUG)

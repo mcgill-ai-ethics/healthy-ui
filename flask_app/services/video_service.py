@@ -8,7 +8,6 @@ import yt_transcript
 
 fake = Factory.create()
 
-from dummy_data import video_list
 from go_interface import youtube_cc
 
 youtube_ids = [
@@ -120,15 +119,15 @@ def get_youtube_blob_keywords(video_ids):
 
         trk.analyze(blob, candidate_pos = ['NOUN', 'PROPN'], window_size=4, lower=False)
         keywords = trk.get_keywords(10)
-        print(keywords)
+        print("keyword: ", keywords)
         
-
         tags = vid_data[video_id]["items"][0]["snippet"]["tags"]
+        print("Tags: ",tags)
 
         best_keywords = {}
         dict_keyphrases = {}
-        if tags is not None:
 
+        if tags is not None:
             for keyword, score in keywords.items():
                 closest = trk.closest_keyword2(keyword, tags)
                 if closest is None:
@@ -151,8 +150,10 @@ def get_youtube_blob_keywords(video_ids):
                                 best_keywords[c] = score * s
             
         # How many queries to generate, and how many keywords per query
-        query_strings = trk.generate_query_strings(best_keywords, num_q=3, keywords_per_q=3)
+        query_strings = trk.generate_query_strings(best_keywords, 3, 3)
         query_strings = list(query_strings)
+
+        print("query_strings: ",query_strings)
 
         json_results[video_id] = {
             "query_strings": query_strings,
