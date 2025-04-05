@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 
 class Config:
-    DATABASE_NAME=os.getenv("HealthyUI_DB")
+    DATABASE_NAME=os.getenv("DATABASE_NAME")
 
     GOOGLE_API_KEY=os.getenv("GOOGLE_API_KEY") 
     CLIENT_ID=os.getenv("CLIENT_ID")

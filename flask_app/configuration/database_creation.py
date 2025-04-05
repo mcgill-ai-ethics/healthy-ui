@@ -4,7 +4,7 @@ from pymongo import MongoClient
 from schemas import antonym_schema
 
 def get_db_connection():
-    database_url = os.getenv("DATABASE_URL")
+    database_url = os.getenv("DATABASE_URI")
     client = MongoClient()
 
     try:
