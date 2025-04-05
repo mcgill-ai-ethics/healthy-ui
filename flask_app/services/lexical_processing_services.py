@@ -19,6 +19,7 @@ def fetch_political_antonyms(query: str) -> str:
         if not word:
             continue
 
+        word = word.lower()
         antonym = antonym_collection.find_one({"word1": {"$regex": f"^{word}$", "$options": "i"}})
         if antonym != None:
             word_antonym = antonym["word2"]

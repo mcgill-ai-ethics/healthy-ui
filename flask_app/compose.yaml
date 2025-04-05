@@ -8,19 +8,21 @@ services:
       - ./.env
     volumes:
       - '.:/app'
-    depends_on:
-      - mongodb
-    links: 
-      - mongodb
 
-  mongodb:
-    image: mongo:latest
-    container_name: HealthyUI_DB 
-    hostname: healthy_ui
-    ports: 
-     - 27017:27017 
-    environment: 
-      - MONGO_INITDB_DATABASE=healthy_ui
-    volumes:
-      - ./mongo-data:/data/db
+# uncomment this part when you develop locally for mongodb
+    #   depends_on:
+    #     - mongodb
+    #   links: 
+    #     - mongodb
+
+  #mongodb:
+  #  image: mongo:latest
+  #  container_name: HealthyUI_DB 
+  #  hostname: healthy_ui
+  #  ports: 
+  #   - 27017:27017 
+  #  environment: 
+  #    - MONGO_INITDB_DATABASE=healthy_ui
+  #  volumes:
+  #    - ./mongo-data:/data/db
 

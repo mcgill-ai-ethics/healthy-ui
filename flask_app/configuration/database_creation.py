@@ -2,7 +2,6 @@ import os
 from pymongo import MongoClient
 
 from schemas import antonym_schema
-#from data import political_antonyms
 
 def get_db_connection():
     database_url = os.getenv("DATABASE_URL")
