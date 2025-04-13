@@ -11,4 +11,5 @@ bundle the extension.
 bundle the extension with interactive watch mode.
 
 ### ToDo
-- Need to add caching for articles
+- Need to add caching for articles [Done]
+- Need to lock tab change until query is finished
