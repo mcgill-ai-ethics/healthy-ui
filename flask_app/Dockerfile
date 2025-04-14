@@ -6,7 +6,6 @@
 
 # Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
 
-ARG ENV=DEV
 
 ARG PYTHON_VERSION=3.10.12
 FROM python:${PYTHON_VERSION}-slim as base
@@ -41,7 +40,7 @@ RUN python -m pip install -r requirements.txt
 USER appuser
 
 # Copy the source code into the container.
-COPY . .
+COPY . /app
 
 ENV FLASK_APP=app.py
 
@@ -49,12 +48,12 @@ ENV FLASK_APP=app.py
 EXPOSE 5000
 
 # Run the application.
-RUN if ["$ENV" = "PROD"]; then\
-  rm ./.env;\
+#ARG ENV
+#ENV ENV=${ENV}
+
+#RUN chmod +x ./run_docker.sh
+RUN if [ "$ENV" = "PROD" ]; then\
+  rm /app/.env;\
 fi
 
-# Prod
-CMD ["/bin/bash", "-c", "gunicorn -w 3 --bind 0.0.0.0:$PORT wsgi:app"]
-
-# Dev
-#CMD ["python", "app.py"]
+CMD ["/app/run_docker.sh"]

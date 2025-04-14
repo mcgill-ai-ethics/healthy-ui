@@ -20,9 +20,9 @@ class DevelopmentConfig(Config):
 
 
 def get_config():
-    env_load_result = load_dotenv()
+    env_load_result = os.getenv("ENV") 
 
-    if env_load_result:
+    if env_load_result == "DEV":
         return DevelopmentConfig
     return ProductionConfig
 
