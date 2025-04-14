@@ -58,7 +58,7 @@ const App = () => {
     else {
       fetchResult = await fetchNewsFactCheck(videoId);
     }
-    console.log(fetchResult);//test
+    console.log(fetchResult);
 
     setDataFetchState(fetchResult.status)
     if (fetchResult.status == DataFetchState.SUCCESSFUL_DATA_FETCH && fetchResult.articles !== null) {
@@ -106,8 +106,8 @@ const App = () => {
               labelPlacement="top"
               control={
                 <Switch
-                  checked={isAntiSiloingQueryOption}
                   onChange={changeQueryOption} />}
+              disabled={dataFetchState === DataFetchState.LOADING ? true : false}
               label={isAntiSiloingQueryOption ? 'Anti-Siloing' : 'Fact-Check'} />
           </FormGroup>
         </Grid>
