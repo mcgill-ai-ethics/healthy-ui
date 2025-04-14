@@ -64,18 +64,24 @@ Add the following .env file to your frontend/extension:
 ```
 BACKEND_HOST=<HOST_NAME>
 PORT=<PORT_NUMBER>
+PROD_BACKEND_HOST=<BACKEND_HOST>
+
+ENV=<PROD | DEV>
 ```
-And the following .env file for your Flask backend:
+And the following .env file for your Flask backend (i.e. create a .env file in your flask_app directory):
 ```
 GOOGLE_API_KEY=<KEY>
 CLIENT_ID=<ID>
 CLIENT_SECRET=<KEY>
 NEWS_API_KEY=<KEY>
 
-BACKEND_HOST=<HOST_NAME>
+HOST=<HOST_NAME>
 PORT=<PORT_NUMBER>
 
-ENV=DEV
+DATABASE_NAME=<NAME>
+DATABSE_HOST=<HOST>
+DATABASE_PORT=<PORT>
+DATABASE_URI=<URI>
 ```
 
 ### Notes for dev vs prod
@@ -98,11 +104,8 @@ ENV=DEV
   - Create pipelines to host website
     - Create docker container [Done for Flask]
     - Host on remoter server (Heroku, Azure, ...)
-  - Need to update fact-check algo and add anti-siloing algo
+  - Need to update fact-check algo and add anti-siloing algo [Done]
     - Update fact-check algo to better match words
     - Add anti-siloing algo
 
-- If time permits, start implementing the carbon emission tracker
-
-### Known Issues
-- YoutTube videos accessed through the chrome recent history tab will not update fetch fact-checked articles for the video
+- If time permits, start implementing the carbon emission tracker [Not Completed]
