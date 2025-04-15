@@ -5,6 +5,7 @@ export const trimFactCheckArticles = (data: any): Article[] => {
 
   const findClaims = (data: any) => {
     if (data.hasOwnProperty("claimReview")) {
+      console.log("Trimming articles: ", data['claimReview']);//test
       claims.push({ id: data['claimReview'][0]['url'] + data['claimReview'][0]['title'], title: data['claimReview'][0]['title'], url: data['claimReview'][0]['url'] });
     }
 

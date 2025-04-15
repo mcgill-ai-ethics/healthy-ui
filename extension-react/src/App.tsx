@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 
 import { VideoURL, Article, ArticlesQueryStatus } from './common/types'
 import { DataFetchState, QueryOption } from './common/enums'
-import { fetchAntiSiloing, fetchNewsFactCheck } from './api/api-calls'
+import { fetchArticles } from './api/api-calls'
 
 import Logo from './components/Logo'
 import TypographyTheme from './components/TypographyTheme'
@@ -53,10 +53,10 @@ const App = () => {
     let fetchResult: ArticlesQueryStatus;
 
     if (option === QueryOption.ANTI_SILOING) {
-      fetchResult = await fetchAntiSiloing(videoId);
+      fetchResult = await fetchArticles(videoId, QueryOption.ANTI_SILOING);
     }
     else {
-      fetchResult = await fetchNewsFactCheck(videoId);
+      fetchResult = await fetchArticles(videoId, QueryOption.FACT_CHECK);
     }
     console.log(fetchResult);
 
