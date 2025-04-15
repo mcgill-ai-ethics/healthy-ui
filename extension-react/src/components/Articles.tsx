@@ -24,7 +24,7 @@ const Articles: React.FC<DataFetchStateProps> = ({ fetchState, articles }) => {
       }
       {fetchState == DataFetchState.NO_DATA_TO_BE_LOADED &&
         <Grid container xs={12} justifyContent="center" alignItems='center' style={{ minHeight: '208px' }}>
-          No fact-checked articles for this video
+          No articles for this video
         </Grid>
       }
       {fetchState == DataFetchState.LOADING &&
