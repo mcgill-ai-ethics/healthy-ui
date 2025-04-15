@@ -15,35 +15,7 @@ import { QueryOption } from '../common/enums'
 
 
 const backendAPI = environmentConfig();
-
 const localStorageTimeToLive = 5 * 60 * 1000;
-
-// use this to do a basic check if the server is up and running
-// and responding to requests
-export const fetchTestData = async () => {
-  const { data } = await axios.get(`${backendAPI}/`)
-  return data
-}
-
-// eventually if our results get cpu expensive
-// we can also pass in a config object like
-// enableFactcheck: true
-// enableSpectrumCheck: true
-export const fetchVideosById = async (videoIds: string | string[] = []) => {
-  // default, no ids
-  if (!videoIds.length) {
-    const url = `${backendAPI}/api/video`
-    const { data } = await axios.get(url)
-    return data
-  }
-
-  // handle single id or array of ids
-  const ids = Array.isArray(videoIds) ? videoIds : [videoIds]
-  const encodedIds = encodeURIComponent(ids.join(','))
-  const url = `${backendAPI}/api/video?ids=${encodedIds}`
-  const { data } = await axios.get(url)
-  return data
-}
 
 export const fetchArticles = async (videoId: string, queryOption: QueryOptions): Promise<ArticlesQueryStatus> => {
   let url: string = "";
