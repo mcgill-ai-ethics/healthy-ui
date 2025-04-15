@@ -66,7 +66,7 @@ BACKEND_HOST=<HOST_NAME>
 PORT=<PORT_NUMBER>
 PROD_BACKEND_HOST=<BACKEND_HOST>
 
-ENV=< PROD | DEV >
+ENV=DEV
 ```
 And the following .env file for your Flask backend (i.e. create a .env file in your flask_app directory):
 ```
@@ -83,7 +83,7 @@ DATABSE_HOST=<HOST>
 DATABASE_PORT=<PORT>
 DATABASE_URI=<URI>
 
-ENV=< PROD | DEV >
+ENV=DEV
 ```
 
 ### Notes for dev vs prod
