@@ -58,7 +58,7 @@ export const fetchArticles = async (videoId: string, queryOption: QueryOptions):
     if (localStorageArticlesAfterFetch !== null
       && localStorageArticlesAfterFetch.timeToLive >= currDate.getTime()
       && localStorageArticlesAfterFetch.articles.length !== 0) {
-      console.log("fetching from local storage for  articles after backend fetch")
+      console.log("fetching from local storage for articles after backend fetch")
       return { articles: localStorageArticlesAfterFetch.articles, status: DataFetchState.SUCCESSFUL_DATA_FETCH };
     }
 

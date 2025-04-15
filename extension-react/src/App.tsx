@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { VideoURL, Article, ArticlesQueryStatus } from './common/types'
 import { DataFetchState, QueryOption } from './common/enums'
@@ -21,13 +21,7 @@ const App = () => {
   const [dataFetchState, setDataFetchState] = useState<DataFetchState>(DataFetchState.WRONG_PAGE);
   const [isAntiSiloingQueryOption, setIsAntiSiloingQueryOption] = useState<boolean>(false);
 
-  const hasNotBeenLoaded = useRef(true);
-
   useEffect(() => {
-    if (!hasNotBeenLoaded.current) {
-      return;
-    }
-
     chrome.storage.local.get('url', (data: VideoURL) => {
       if (!data.url.includes("youtube.com/watch")) {
         setDataFetchState(DataFetchState.WRONG_PAGE);
@@ -42,7 +36,6 @@ const App = () => {
         loadArticles(data.url, QueryOption.FACT_CHECK);
       }
     })
-    hasNotBeenLoaded.current = false;
   }, [isAntiSiloingQueryOption])
 
 
@@ -78,7 +71,6 @@ const App = () => {
     else {
       setIsAntiSiloingQueryOption(true);
     }
-    hasNotBeenLoaded.current = true;
   }
 
   return (
