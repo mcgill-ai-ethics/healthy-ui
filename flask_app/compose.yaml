@@ -13,10 +13,10 @@ services:
       - '.:/app'
 
 # uncomment this part when you develop locally for mongodb
-      depends_on:
-          - mongodb
-      links: 
-          - mongodb
+    depends_on:
+        - mongodb
+    links: 
+        - mongodb
     
   mongodb:
     image: mongo:latest
