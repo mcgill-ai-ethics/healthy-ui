@@ -46,10 +46,10 @@ docker compose up --build
 the extension needs to be loaded into chrome: 
 
 extension workflow: 
+
 `$ cd extension-react`  
 `$ npm install`   
 `$ npm run build`   
-`$ npm watch`   
 
 open chrome browser  
 navigate to [chrome extensions page](chrome://extensions/)
@@ -90,22 +90,3 @@ DATABASE_URI=<URI>
 
 ## Credits
 - Logo and Icon for the chrome extension are generate from the logo.com website
-
-### ToDo
-#### Winter 2025
-- Finish implementing the videos fact-check articles
-  - Fix the backend code to remove all inference errors [Done for now]
-  - Fix frontend extension code so that it runs on local host [Done]
-    - Display fact checked websites using the extension [Done]
-    - Potentially always add it as a pop up when clicking a new youtube video [Done -> users are free to click the extension for fack check articles]
-    - Need to add caching at the frontend [Done]
-    - Add logo to extension [Done]
-    - Create .env file [Done]
-  - Create pipelines to host website
-    - Create docker container [Done for Flask]
-    - Host on remoter server (Heroku, Azure, ...)
-  - Need to update fact-check algo and add anti-siloing algo [Done]
-    - Update fact-check algo to better match words
-    - Add anti-siloing algo
-
-- If time permits, start implementing the carbon emission tracker [Not Completed]
