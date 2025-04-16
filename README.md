@@ -46,10 +46,10 @@ docker compose up --build
 the extension needs to be loaded into chrome: 
 
 extension workflow: 
+
 `$ cd extension-react`  
 `$ npm install`   
 `$ npm run build`   
-`$ npm watch`   
 
 open chrome browser  
 navigate to [chrome extensions page](chrome://extensions/)
