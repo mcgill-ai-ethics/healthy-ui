@@ -90,5 +90,9 @@ ENV=DEV
 - To work in locally, you need to make sure the .env file is not ignored in .dockerignore
 - You can push a subtree to heorku for the frontend and the backend
 
+### Improvements 
+- The anti-siloing part of the application could use a better model to filter YouTube videos. Right now, only the antonyms of common words are queried. However, we would like to expand this idea and find "antonyms" for group of words instead. In this case, we would need to re-define what is an "antonym" in our case (e.g. Donald Trump election campaign -> Kamala Harris election campaign).
+- The fact-checked part of the application could also be improved. That is, we can work on improving the algorithm which can find the best 3 words from a YouTube transcript. An alternative to this idea is to create our own list of articles which we will fact-check and store in our own database.
+
 ## Credits
 - Logo and Icon for the chrome extension are generate from the logo.com website
