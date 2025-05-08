@@ -3,3 +3,5 @@
 *venv/
 **/__pycache__/
 *.dll
+react-app/node_modules
+extension-react/node_modules
