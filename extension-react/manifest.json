@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "HealthyUI Chrome Extension",
-  "description": "Chrome Extension for the HealthyUI app with React and Webpack",
+  "description": "This Chrome extension provides either fact-check articles, or it provides alternate point of views articles related to the video.",
   "version": "1.0.0",
   "icons": {
     "16": "assets/icon16.png",
