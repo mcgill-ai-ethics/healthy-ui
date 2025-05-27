@@ -84,7 +84,7 @@ const App = () => {
         </Grid>
         <Grid container xs={12} justifyContent="center" style={{ minHeight: '208px' }}>
           {isAntiSiloingQueryOption && <Articles fetchState={dataFetchState} articles={antiSiloingArticles} />}
-          {!isAntiSiloingQueryOption && <Articles fetchState={dataFetchState} articles={factCheckedArticles} />};
+          {!isAntiSiloingQueryOption && <Articles fetchState={dataFetchState} articles={factCheckedArticles} />}
         </Grid>
         <Grid xs={12}>
           <Divider sx={{ backgroundColor: 'black', boxShadow: "0px 0px 10px gray" }} aria-hidden='true' />
