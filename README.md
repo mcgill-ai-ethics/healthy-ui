@@ -1,6 +1,7 @@
 #  Healthy UI
 
 ### Getting started 
+- The Chrome extension is officially published and can be found [here](https://chromewebstore.google.com/detail/healthyui-chrome-extensio/mlegmdaobcndihbjbjklekangibcanag?authuser=0&hl=en-US)
 
 ### React via CRA
 ##### 1. get nvm 
