@@ -1,6 +1,6 @@
 #  Healthy UI
 
-## Notice November 1st 2025
+## Notice - November 1st 2025
 This is a notice that this project is no longer running. Thanks to all who supported us throughout this journey. Please contact Prof. Joseph Vybihal at McGill University for the continuation of this project. Cheers!
 
 ### Getting started 
